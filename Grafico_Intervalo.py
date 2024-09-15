@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 from tabulate import tabulate
 
 #Aca ingresa el multiplicador de x al cuadrado
-valA = 0
+valA = 1
 #Aca ingresa el valor del multiplicador de x
-valB = 0
+valB = 2
 #Aca ingresa el valor del multplicador del num
-valC = 0
+valC = 3
 #Aca ingresa el valor de x en la función
 valx = 0
 
@@ -27,7 +27,7 @@ cantidad_intervalos = 0
 #Se ingresa la función, el limite menor, el límite mayor, y la cantidad de intervalitos
 def RiemannInf(f, Li, Ls, n):
     #x va a tomar el número que tiene cada intervalo. Linspace divide el rango en n intervalos con el mismo tamaño
-    x = np.linspace(xi, xf, n)
+    x = np.linspace(Li, Ls, n)
     #variable donde se van a sumar las areas de los rectangulos
     area_total = 0
     #Una lista donde se almacenan cada area de cada rectángulo
@@ -44,14 +44,13 @@ def RiemannInf(f, Li, Ls, n):
     for i in range (1, n):
         #Suma de Riemman
         #busca el valor de la izquierda del subintervalo
-        valor_izquierdo(f(x[i-1]))
+        valor_izquierdo = (f(valA, valB, valC, x[i-1]))
         #busca el valor a la derecha del subintervalo
-        valor_derecho(f(x[i]))
+        valor_derecho = (f(valA, valB, valC, x[i]))
         #compara el tamaño de la izquierda con el de la derecha y elige el menor
-        menor = min([f(x[i-1]), f(x[i])])
+        menor = min([f(valA, valB, valC, x[i-1]), f(valA, valB, valC, x[i])])
         #Calcula el ancho del rectángulo
         ancho = x[i] - x[i-1]
-                      #Ancho del subintervalo o rectangulo. En este caso es constante.
         #Agrega el area de los rectangulos a la lista de los angulos de los rectángulos
         areas_rectangulos.append(menor*ancho)
         #Suma al total el tamaño del area del rectángulo i
@@ -63,22 +62,21 @@ def RiemannInf(f, Li, Ls, n):
         coor_y.append(0)
         #2) Esquina superior izquierda
         coor_x.append(x[i-1])
-        coor_y.append(fx)
+        coor_y.append(menor)
         #3) Esquina superior derecha
         coor_x.append(x[i])
-        coor_y.append(fx)
+        coor_y.append(menor)
         #4) Esquina inferior derecha
         coor_x.append(x[i])    
         coor_y.append(0)
 
     return(area_total, coor_x, coor_y)
 
-
-#Función que calcula los rectangulos de abajo de la función
+#Función que calcula los rectangulos de arriba de la función
 #Se ingresa la función, el limite menor, el límite mayor, y la cantidad de intervalitos
-def RiemannInf(f, Li, Ls, n):
+def RiemannSup(f, Li, Ls, n):
     #x va a tomar el número que tiene cada intervalo. Linspace divide el rango en n intervalos con el mismo tamaño
-    x = np.linspace(xi, xf, n)
+    x = np.linspace(Li, Ls, n)
     #variable donde se van a sumar las areas de los rectangulos
     area_total = 0
     #Una lista donde se almacenan cada area de cada rectángulo
@@ -95,14 +93,13 @@ def RiemannInf(f, Li, Ls, n):
     for i in range (1, n):
         #Suma de Riemman
         #busca el valor de la izquierda del subintervalo
-        valor_izquierdo(f(x[i-1]))
+        valor_izquierdo = (f(valA, valB, valC, x[i-1]))
         #busca el valor a la derecha del subintervalo
-        valor_derecho(f(x[i]))
+        valor_derecho= (f(valA, valB, valC, x[i]))
         #compara el tamaño de la izquierda con el de la derecha y elige el menor
-        menor = min([f(x[i-1]), f(x[i])])
+        menor = max([f(valA, valB, valC, x[i-1]), f(valA, valB, valC, x[i])])
         #Calcula el ancho del rectángulo
         ancho = x[i] - x[i-1]
-                      #Ancho del subintervalo o rectangulo. En este caso es constante.
         #Agrega el area de los rectangulos a la lista de los angulos de los rectángulos
         areas_rectangulos.append(menor*ancho)
         #Suma al total el tamaño del area del rectángulo i
@@ -114,12 +111,53 @@ def RiemannInf(f, Li, Ls, n):
         coor_y.append(0)
         #2) Esquina superior izquierda
         coor_x.append(x[i-1])
-        coor_y.append(fx)
+        coor_y.append(menor)
         #3) Esquina superior derecha
         coor_x.append(x[i])
-        coor_y.append(fx)
+        coor_y.append(menor)
         #4) Esquina inferior derecha
         coor_x.append(x[i])    
         coor_y.append(0)
 
     return(area_total, coor_x, coor_y)
+
+
+#Gráfico inferior
+n_intervalos = 8
+Area_inferior, xbar, ybar = RiemannInf(funcion_cuad, limiteInferior, limiteSuperior, n_intervalos)
+#Porcentaje de error
+e1 = ((Aexacta - Area_inferior)/Aexacta)*100
+
+x = np.linspace(limiteInferior, limiteSuperior, 20)
+
+print("Grafica de la funcion")
+plt.plot(x, funcion_cuad(x), 'k', label=("f(x)"))
+plt.plot(xbar, ybar, 'b:', label=("Suma de Riemann Inferior"))
+plt.xlabel("x")            #Etiqueta de eje
+plt.ylabel("f(x)")            #Etiqueta de eje
+plt.title("Grafica de f(x)") #Titulo del grafico
+plt.legend()                    #Leyendas
+plt.show()                      #Mostrar grafico
+
+#Gráfico superior
+n_intervalos = 8
+Area_superior, xbar, ybar = RiemannSup(funcion_cuad, limiteInferior, limiteSuperior, n_intervalos)
+#Porcentaje de error
+e2 = ((Aexacta - Area_inferior)/Aexacta)*100
+
+x = np.linspace(limiteInferior, limiteSuperior, 20)
+
+print("Grafica de la funcion")
+plt.plot(x, funcion_cuad(x), 'k', label=("f(x)"))
+plt.plot(xbar, ybar, 'b:', label=("Suma de Riemann Superior"))
+plt.xlabel("x")            #Etiqueta de eje
+plt.ylabel("f(x)")            #Etiqueta de eje
+plt.title("Grafica de f(x)") #Titulo del grafico
+plt.legend()                    #Leyendas
+plt.show()                      #Mostrar grafico
+
+tabla = [['Inferior', n_intervalos, Area_superior, e1], 
+         ['Superior', n_intervalos, Area_superior, e2]
+         ]
+
+print(tabulate(tabla, headers = ["Particion", "Suma", "Error (%)"]))
