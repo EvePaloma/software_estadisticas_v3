@@ -41,6 +41,7 @@ def RiemannInf(f, Li, Ls, n):
     #Coordenadas en 'y' de las esquinas de cada barra del grafico de barras                             
     coor_y = []                             
 
+#Ver si toma las variables que deberia
 #Cambiar los valores dentro del f de x, de donde salen?
     for i in range (1, n):
         #Suma de Riemman
