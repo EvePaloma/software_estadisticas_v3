@@ -21,7 +21,7 @@ limiteInferior = 0
 #El usuario ingresa el valor mayor del rango
 limiteSuperior = 0
 #El usuario ingresa la cantidad de particiones que va a tener el rango
-cantidad_intervalos = 0
+cantidad_intervalos = 8
 
 #Función que calcula los rectangulos de abajo de la función
 #Se ingresa la función, el limite menor, el límite mayor, y la cantidad de intervalitos
@@ -41,6 +41,7 @@ def RiemannInf(f, Li, Ls, n):
     #Coordenadas en 'y' de las esquinas de cada barra del grafico de barras                             
     coor_y = []                             
 
+#Cambiar los valores dentro del f de x, de donde salen?
     for i in range (1, n):
         #Suma de Riemman
         #busca el valor de la izquierda del subintervalo
@@ -139,6 +140,8 @@ plt.title("Grafica de f(x)") #Titulo del grafico
 plt.legend()                    #Leyendas
 plt.show()                      #Mostrar grafico
 
+print(Area_inferior)
+
 #Gráfico superior
 n_intervalos = 8
 Area_superior, xbar, ybar = RiemannSup(funcion_cuad, limiteInferior, limiteSuperior, n_intervalos)
@@ -157,7 +160,7 @@ plt.legend()                    #Leyendas
 plt.show()                      #Mostrar grafico
 
 tabla = [['Inferior', n_intervalos, Area_superior], 
-         ['Superior', n_intervalos, Area_superior]
+         ['Superior', n_intervalos, Area_inferior]
          ]
 
 print(tabulate(tabla, headers = ["Particion", "Suma", "Error (%)"]))
