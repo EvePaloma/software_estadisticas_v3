@@ -126,12 +126,12 @@ def RiemannSup(f, Li, Ls, n):
 n_intervalos = 8
 Area_inferior, xbar, ybar = RiemannInf(funcion_cuad, limiteInferior, limiteSuperior, n_intervalos)
 #Porcentaje de error
-e1 = ((Aexacta - Area_inferior)/Aexacta)*100
+#e1 = ((Aexacta - Area_inferior)/Aexacta)*100
 
 x = np.linspace(limiteInferior, limiteSuperior, 20)
 
 print("Grafica de la funcion")
-plt.plot(x, funcion_cuad(x), 'k', label=("f(x)"))
+plt.plot(x, funcion_cuad(valA, valB, valC, x), 'k', label=("f(x)"))
 plt.plot(xbar, ybar, 'b:', label=("Suma de Riemann Inferior"))
 plt.xlabel("x")            #Etiqueta de eje
 plt.ylabel("f(x)")            #Etiqueta de eje
@@ -143,12 +143,12 @@ plt.show()                      #Mostrar grafico
 n_intervalos = 8
 Area_superior, xbar, ybar = RiemannSup(funcion_cuad, limiteInferior, limiteSuperior, n_intervalos)
 #Porcentaje de error
-e2 = ((Aexacta - Area_inferior)/Aexacta)*100
+#e2 = ((Aexacta - Area_inferior)/Aexacta)*100
 
 x = np.linspace(limiteInferior, limiteSuperior, 20)
 
 print("Grafica de la funcion")
-plt.plot(x, funcion_cuad(x), 'k', label=("f(x)"))
+plt.plot(x, funcion_cuad(valA, valB, valC, x), 'k', label=("f(x)"))
 plt.plot(xbar, ybar, 'b:', label=("Suma de Riemann Superior"))
 plt.xlabel("x")            #Etiqueta de eje
 plt.ylabel("f(x)")            #Etiqueta de eje
@@ -156,8 +156,8 @@ plt.title("Grafica de f(x)") #Titulo del grafico
 plt.legend()                    #Leyendas
 plt.show()                      #Mostrar grafico
 
-tabla = [['Inferior', n_intervalos, Area_superior, e1], 
-         ['Superior', n_intervalos, Area_superior, e2]
+tabla = [['Inferior', n_intervalos, Area_superior], 
+         ['Superior', n_intervalos, Area_superior]
          ]
 
 print(tabulate(tabla, headers = ["Particion", "Suma", "Error (%)"]))
