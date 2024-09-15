@@ -17,11 +17,11 @@ def funcion_cuad(a, b, c, x):
     return (y)
 
 #El usuario ingresa el valor menor del rango
-limiteInferior = 0
+limiteInferior = 2
 #El usuario ingresa el valor mayor del rango
-limiteSuperior = 0
+limiteSuperior = 5
 #El usuario ingresa la cantidad de particiones que va a tener el rango
-cantidad_intervalos = 8
+cantidad_intervalos = 3
 
 #Función que calcula los rectangulos de abajo de la función
 #Se ingresa la función, el limite menor, el límite mayor, y la cantidad de intervalitos
@@ -45,11 +45,15 @@ def RiemannInf(f, Li, Ls, n):
 #Cambiar los valores dentro del f de x, de donde salen?
     for i in range (1, n):
         #Suma de Riemman
+
+        #VALIDAR SI ESTAN
         #busca el valor de la izquierda del subintervalo
         valor_izquierdo = (f(valA, valB, valC, x[i-1]))
         #busca el valor a la derecha del subintervalo
         valor_derecho = (f(valA, valB, valC, x[i]))
         #compara el tamaño de la izquierda con el de la derecha y elige el menor
+
+        #VER DE REEMPLAZAR LAS FUNCIONES DE ABAJO CON LOS VALORES DE IZQ Y DERE!!! CAPAZ ASI ANDA
         menor = min([f(valA, valB, valC, x[i-1]), f(valA, valB, valC, x[i])])
         #Calcula el ancho del rectángulo
         ancho = x[i] - x[i-1]
@@ -125,7 +129,7 @@ def RiemannSup(f, Li, Ls, n):
 
 
 #Gráfico inferior
-n_intervalos = 8
+n_intervalos = 4
 Area_inferior, xbar, ybar = RiemannInf(funcion_cuad, limiteInferior, limiteSuperior, n_intervalos)
 #Porcentaje de error
 #e1 = ((Aexacta - Area_inferior)/Aexacta)*100
@@ -144,7 +148,7 @@ plt.show()                      #Mostrar grafico
 print(Area_inferior)
 
 #Gráfico superior
-n_intervalos = 8
+n_intervalos = 4
 Area_superior, xbar, ybar = RiemannSup(funcion_cuad, limiteInferior, limiteSuperior, n_intervalos)
 #Porcentaje de error
 #e2 = ((Aexacta - Area_inferior)/Aexacta)*100
