@@ -34,6 +34,8 @@ def Riemann_inferior(Li, Ls, n):
     #Coordenadas en 'y' de las esquinas de cada barra del grafico de barras                             
     coor_y = []                             
 
+    diccionario_inferior = {}
+
     for i in range (1, n):
         #Suma de Rieman
         #compara el tamaño de la izquierda con el de la derecha y elige el menor
@@ -57,7 +59,12 @@ def Riemann_inferior(Li, Ls, n):
         coor_x.append(x[i])    
         coor_y.append(0)
 
-    return(area_total, coor_x, coor_y)
+        diccionario_inferior["infI" + str(i)] = (x[i-1],0)
+        diccionario_inferior["supI" + str(i)] = (x[i-1],menor)
+        diccionario_inferior["supD" + str(i)] = (x[i],menor)
+        diccionario_inferior["infD" + str(i)] = (x[i],0)
+
+    return(area_total, coor_x, coor_y, diccionario_inferior)
 
 print(Riemann_inferior(limiteInferior, limiteSuperior, cantidad_intervalos))
 
@@ -97,9 +104,10 @@ def Riemann_superior(Li, Ls, n):
         coor_x.append(x[i])    
         coor_y.append(0)
 
+
     return(area_total, coor_x, coor_y)
 
-print(Riemann_superior(limiteInferior, limiteSuperior, cantidad_intervalos))
+#print(Riemann_superior(limiteInferior, limiteSuperior, cantidad_intervalos))
 
 
 """#Gráfico inferior
