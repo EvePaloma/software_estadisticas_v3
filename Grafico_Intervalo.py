@@ -24,22 +24,16 @@ cantidad_intervalos = 3
 
 #Función que calcula los rectangulos de abajo de la función
 #Se ingresa la función, el limite menor, el límite mayor, y la cantidad de intervalitos
-def RiemannInf(Li, Ls, n):
+def Riemann_inferior(Li, Ls, n):
     #x va a tomar el número que tiene cada intervalo. Linspace divide el rango en n intervalos con el mismo tamaño
     x = np.linspace(Li, Ls, n)
     #variable donde se van a sumar las areas de los rectangulos
     area_total = 0
-    #variable donde se almacena el valor de la izquierda del subintervalo
-    valor_izquierdo = 0
-    #variable donde se almacena el valor de la derecha del subintervalo
-    valor_derecho = 0
     #Coordenadas en 'x' de las esquinas de cada barra del grafico de barras
     coor_x = []
     #Coordenadas en 'y' de las esquinas de cada barra del grafico de barras                             
     coor_y = []                             
 
-#Ver si toma las variables que deberia
-#Cambiar los valores dentro del f de x, de donde salen?
     for i in range (1, n):
         #Suma de Rieman
         #compara el tamaño de la izquierda con el de la derecha y elige el menor
@@ -65,42 +59,29 @@ def RiemannInf(Li, Ls, n):
 
     return(area_total, coor_x, coor_y)
 
-print(funcion_cuad(1,-2,3,2))
-print(RiemannInf(limiteInferior, limiteSuperior, cantidad_intervalos))
+print(Riemann_inferior(limiteInferior, limiteSuperior, cantidad_intervalos))
 
 
 #Función que calcula los rectangulos de arriba de la función
 #Se ingresa la función, el limite menor, el límite mayor, y la cantidad de intervalitos
-def RiemannSup(f, Li, Ls, n):
+def Riemann_superior(Li, Ls, n):
     #x va a tomar el número que tiene cada intervalo. Linspace divide el rango en n intervalos con el mismo tamaño
     x = np.linspace(Li, Ls, n)
     #variable donde se van a sumar las areas de los rectangulos
     area_total = 0
-    #Una lista donde se almacenan cada area de cada rectángulo
-    areas_rectangulos = []
-    #variable donde se almacena el valor de la izquierda del subintervalo
-    valor_izquierdo = 0
-    #variable donde se almacena el valor de la derecha del subintervalo
-    valor_derecho = 0
     #Coordenadas en 'x' de las esquinas de cada barra del grafico de barras
     coor_x = []
     #Coordenadas en 'y' de las esquinas de cada barra del grafico de barras                             
     coor_y = []                             
-
+    
     for i in range (1, n):
-        #Suma de Riemman
-        #busca el valor de la izquierda del subintervalo
-        valor_izquierdo = (f(valA, valB, valC, x[i-1]))
-        #busca el valor a la derecha del subintervalo
-        valor_derecho= (f(valA, valB, valC, x[i]))
+        #Suma de Rieman
         #compara el tamaño de la izquierda con el de la derecha y elige el menor
-        menor = max([f(valA, valB, valC, x[i-1]), f(valA, valB, valC, x[i])])
+        mayor = max(funcion_cuad(valA, valB, valC, x[i-1]), funcion_cuad(valA, valB, valC, x[i]))
         #Calcula el ancho del rectángulo
         ancho = x[i] - x[i-1]
-        #Agrega el area de los rectangulos a la lista de los angulos de los rectángulos
-        areas_rectangulos.append(menor*ancho)
         #Suma al total el tamaño del area del rectángulo i
-        area_total += menor*ancho
+        area_total += mayor*ancho
 
         #Datos Grafico de Barras:
         #1) Esquina inferior izquierda
@@ -108,18 +89,20 @@ def RiemannSup(f, Li, Ls, n):
         coor_y.append(0)
         #2) Esquina superior izquierda
         coor_x.append(x[i-1])
-        coor_y.append(menor)
+        coor_y.append(mayor)
         #3) Esquina superior derecha
         coor_x.append(x[i])
-        coor_y.append(menor)
+        coor_y.append(mayor)
         #4) Esquina inferior derecha
         coor_x.append(x[i])    
         coor_y.append(0)
 
     return(area_total, coor_x, coor_y)
 
+print(Riemann_superior(limiteInferior, limiteSuperior, cantidad_intervalos))
 
-#Gráfico inferior
+
+"""#Gráfico inferior
 n_intervalos = 4
 Area_inferior, xbar, ybar = RiemannInf(funcion_cuad, limiteInferior, limiteSuperior, n_intervalos)
 #Porcentaje de error
@@ -159,4 +142,4 @@ tabla = [['Inferior', n_intervalos, Area_superior],
          ['Superior', n_intervalos, Area_inferior]
          ]
 
-print(tabulate(tabla, headers = ["Particion", "Suma", "Error (%)"]))
+print(tabulate(tabla, headers = ["Particion", "Suma", "Error (%)"])) """
