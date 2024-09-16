@@ -2,14 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tabulate import tabulate
 
+#RECORDAR QUE PUEDEN ENTRAR VALORES NEGATIVOS
 #Aca ingresa el multiplicador de x al cuadrado
 valA = 1
 #Aca ingresa el valor del multiplicador de x
-valB = 2
+valB = -2
 #Aca ingresa el valor del multplicador del num
 valC = 3
-#Aca ingresa el valor de x en la función
-valx = 0
 
 def funcion_cuad(a, b, c, x):
     #Función integral, ingresan los datos que de el usuario, el usuario ingresa los multiplicadores de x, x y el num
@@ -25,13 +24,11 @@ cantidad_intervalos = 3
 
 #Función que calcula los rectangulos de abajo de la función
 #Se ingresa la función, el limite menor, el límite mayor, y la cantidad de intervalitos
-def RiemannInf(f, Li, Ls, n):
+def RiemannInf(Li, Ls, n):
     #x va a tomar el número que tiene cada intervalo. Linspace divide el rango en n intervalos con el mismo tamaño
     x = np.linspace(Li, Ls, n)
     #variable donde se van a sumar las areas de los rectangulos
     area_total = 0
-    #Una lista donde se almacenan cada area de cada rectángulo
-    areas_rectangulos = []
     #variable donde se almacena el valor de la izquierda del subintervalo
     valor_izquierdo = 0
     #variable donde se almacena el valor de la derecha del subintervalo
@@ -44,21 +41,11 @@ def RiemannInf(f, Li, Ls, n):
 #Ver si toma las variables que deberia
 #Cambiar los valores dentro del f de x, de donde salen?
     for i in range (1, n):
-        #Suma de Riemman
-
-        #VALIDAR SI ESTAN
-        #busca el valor de la izquierda del subintervalo
-        valor_izquierdo = (f(valA, valB, valC, x[i-1]))
-        #busca el valor a la derecha del subintervalo
-        valor_derecho = (f(valA, valB, valC, x[i]))
+        #Suma de Rieman
         #compara el tamaño de la izquierda con el de la derecha y elige el menor
-
-        #VER DE REEMPLAZAR LAS FUNCIONES DE ABAJO CON LOS VALORES DE IZQ Y DERE!!! CAPAZ ASI ANDA
-        menor = min([f(valA, valB, valC, x[i-1]), f(valA, valB, valC, x[i])])
+        menor = min(funcion_cuad(valA, valB, valC, x[i-1]), funcion_cuad(valA, valB, valC, x[i]))
         #Calcula el ancho del rectángulo
         ancho = x[i] - x[i-1]
-        #Agrega el area de los rectangulos a la lista de los angulos de los rectángulos
-        areas_rectangulos.append(menor*ancho)
         #Suma al total el tamaño del area del rectángulo i
         area_total += menor*ancho
 
@@ -77,6 +64,10 @@ def RiemannInf(f, Li, Ls, n):
         coor_y.append(0)
 
     return(area_total, coor_x, coor_y)
+
+print(funcion_cuad(1,-2,3,2))
+print(RiemannInf(limiteInferior, limiteSuperior, cantidad_intervalos))
+
 
 #Función que calcula los rectangulos de arriba de la función
 #Se ingresa la función, el limite menor, el límite mayor, y la cantidad de intervalitos
