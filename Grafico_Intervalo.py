@@ -26,7 +26,7 @@ cantidad_intervalos = 3
 #Se ingresa la función, el limite menor, el límite mayor, y la cantidad de intervalitos
 def Riemann_inferior(Li, Ls, n):
     #x va a tomar el número que tiene cada intervalo. Linspace divide el rango en n intervalos con el mismo tamaño
-    x = np.linspace(Li, Ls, n)
+    x = np.linspace(Li, Ls, n+1)
     #variable donde se van a sumar las areas de los rectangulos
     area_total = 0
     #Coordenadas en 'x' de las esquinas de cada barra del grafico de barras
@@ -66,7 +66,7 @@ def Riemann_inferior(Li, Ls, n):
 
     return(area_total, coor_x, coor_y, diccionario_inferior)
 
-print(Riemann_inferior(limiteInferior, limiteSuperior, cantidad_intervalos))
+print(Riemann_inferior(limiteInferior, limiteSuperior, cantidad_intervalos+1))
 
 
 #Función que calcula los rectangulos de arriba de la función
