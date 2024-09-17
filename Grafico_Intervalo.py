@@ -24,6 +24,7 @@ cantidad_intervalos = 3
 
 #Función que calcula los rectangulos de abajo de la función
 #Se ingresa la función, el limite menor, el límite mayor, y la cantidad de intervalitos
+#Se le suma 1 a n, ya que al dividir los intervalos, son las lineas las que cuentan y no los espacios
 def Riemann_inferior(Li, Ls, n):
     #x va a tomar el número que tiene cada intervalo. Linspace divide el rango en n intervalos con el mismo tamaño
     x = np.linspace(Li, Ls, n+1)
@@ -36,7 +37,7 @@ def Riemann_inferior(Li, Ls, n):
 
     diccionario_inferior = {}
 
-    for i in range (1, n):
+    for i in range (1, n+1):
         #Suma de Rieman
         #compara el tamaño de la izquierda con el de la derecha y elige el menor
         menor = min(funcion_cuad(valA, valB, valC, x[i-1]), funcion_cuad(valA, valB, valC, x[i]))
@@ -73,7 +74,7 @@ print(Riemann_inferior(limiteInferior, limiteSuperior, cantidad_intervalos+1))
 #Se ingresa la función, el limite menor, el límite mayor, y la cantidad de intervalitos
 def Riemann_superior(Li, Ls, n):
     #x va a tomar el número que tiene cada intervalo. Linspace divide el rango en n intervalos con el mismo tamaño
-    x = np.linspace(Li, Ls, n)
+    x = np.linspace(Li, Ls, n+1)
     #variable donde se van a sumar las areas de los rectangulos
     area_total = 0
     #Coordenadas en 'x' de las esquinas de cada barra del grafico de barras
@@ -81,7 +82,7 @@ def Riemann_superior(Li, Ls, n):
     #Coordenadas en 'y' de las esquinas de cada barra del grafico de barras                             
     coor_y = []                             
     
-    for i in range (1, n):
+    for i in range (1, n+1):
         #Suma de Rieman
         #compara el tamaño de la izquierda con el de la derecha y elige el menor
         mayor = max(funcion_cuad(valA, valB, valC, x[i-1]), funcion_cuad(valA, valB, valC, x[i]))
