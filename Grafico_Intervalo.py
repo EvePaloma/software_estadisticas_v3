@@ -104,10 +104,9 @@ def Riemann_superior(Li, Ls, n):
         coor_x.append(x[i])    
         coor_y.append(0)
 
-
     return(area_total, coor_x, coor_y)
 
-#print(Riemann_superior(limiteInferior, limiteSuperior, cantidad_intervalos))
+print(Riemann_superior(limiteInferior, limiteSuperior, cantidad_intervalos))
 
 #Calculamos la integral indefinida(antiderivada) de la función cuadrática
 def integral_indefinida(x, a, b, c):
