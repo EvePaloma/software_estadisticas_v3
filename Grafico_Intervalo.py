@@ -4,11 +4,11 @@ from tabulate import tabulate
 
 #RECORDAR QUE PUEDEN ENTRAR VALORES NEGATIVOS
 #Aca ingresa el multiplicador de x al cuadrado
-valA = 1
+valA = -5
 #Aca ingresa el valor del multiplicador de x
-valB = -2
+valB = 20
 #Aca ingresa el valor del multplicador del num
-valC = 3
+valC = 0
 
 def funcion_cuad(a, b, c, x):
     #Función integral, ingresan los datos que de el usuario, el usuario ingresa los multiplicadores de x, x y el num
@@ -16,11 +16,11 @@ def funcion_cuad(a, b, c, x):
     return (y)
 
 #El usuario ingresa el valor menor del rango
-limiteInferior = 2
+limiteInferior = 0
 #El usuario ingresa el valor mayor del rango
 limiteSuperior = 5
 #El usuario ingresa la cantidad de particiones que va a tener el rango
-cantidad_intervalos = 3
+cantidad_intervalos = 10
 
 #Función que calcula los rectangulos de abajo de la función
 #Se ingresa la función, el limite menor, el límite mayor, y la cantidad de intervalitos
@@ -134,7 +134,7 @@ def area_exacta(Li, Ls, a, b, c):
 
 
 #Gráfico inferior
-n_intervalos = 4
+n_intervalos = 11
 Area_inferior, xbar, ybar, diccionario_inferior = Riemann_inferior( limiteInferior, limiteSuperior, n_intervalos)
 Area_exacta = area_exacta(limiteInferior, limiteSuperior, valA, valB, valC)
 #Porcentaje de error
@@ -157,11 +157,11 @@ valor_area_exacta = area_exacta(limiteInferior, limiteSuperior, valA,valB,valC)
 #error_inf = calcular_error(valor_area_exacta,Area_inferior)
 
 #Gráfico superior
-n_intervalos = 4
+n_intervalos = 11
 Area_superior, xbar, ybar = Riemann_superior(limiteInferior, limiteSuperior, n_intervalos)
 Area_exacta = area_exacta(limiteInferior, limiteSuperior, valA, valB, valC)
 #Porcentaje de error
-error2 = ((Area_exacta - Area_superior)/Area_exacta)*100
+error2 = ((Area_superior - Area_exacta)/Area_exacta)*100
 
 x = np.linspace(limiteInferior, limiteSuperior, 20)
 
