@@ -125,19 +125,20 @@ def area_exacta(Li, Ls, a, b, c):
 
 
 #Comparamos las áreas sin usar valor absoluto
-def calcular_error(area_exacta, area_aprox):
+'''def calcular_error(area_exacta, area_aprox):
     if area_exacta > area_aprox:
         error = area_exacta - area_aprox
     else:
         error = area_aprox - area_exacta
-    return error
+    return error'''
 
 
 #Gráfico inferior
 n_intervalos = 4
 Area_inferior, xbar, ybar, diccionario_inferior = Riemann_inferior( limiteInferior, limiteSuperior, n_intervalos)
+Area_exacta = area_exacta(limiteInferior, limiteSuperior, valA, valB, valC)
 #Porcentaje de error
-#e1 = ((Aexacta - Area_inferior)/Aexacta)*100
+error1 = ((Area_exacta - Area_inferior)/Area_exacta)*100
 
 x = np.linspace(limiteInferior, limiteSuperior, 20)  #Número de puntos que usamos para graficar la curva
 
@@ -153,13 +154,14 @@ plt.show()                      #Mostrar grafico
 print(Area_inferior)
 
 valor_area_exacta = area_exacta(limiteInferior, limiteSuperior, valA,valB,valC)
-error_inf = calcular_error(valor_area_exacta,Area_inferior)
+#error_inf = calcular_error(valor_area_exacta,Area_inferior)
 
 #Gráfico superior
 n_intervalos = 4
 Area_superior, xbar, ybar = Riemann_superior(limiteInferior, limiteSuperior, n_intervalos)
+Area_exacta = area_exacta(limiteInferior, limiteSuperior, valA, valB, valC)
 #Porcentaje de error
-#e2 = ((Aexacta - Area_inferior)/Aexacta)*100
+error2 = ((Area_exacta - Area_superior)/Area_exacta)*100
 
 x = np.linspace(limiteInferior, limiteSuperior, 20)
 
@@ -175,10 +177,10 @@ plt.show()                      #Mostrar grafico
 print(Area_superior)
 
 valor_area_exacta = area_exacta(limiteInferior,limiteSuperior,valA,valB,valC)
-error_sup = calcular_error(valor_area_exacta,Area_superior)
+#error_sup = calcular_error(valor_area_exacta,Area_superior)
 
-tabla = [['Inferior', n_intervalos, Area_inferior,error_inf], 
-         ['Superior', n_intervalos, Area_superior,error_sup],
+tabla = [['Inferior', n_intervalos, Area_inferior,error1], 
+         ['Superior', n_intervalos, Area_superior,error2],
          ['Exacta', '', valor_area_exacta, '']
          ]
 
