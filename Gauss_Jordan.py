@@ -6,12 +6,15 @@ def gaussJordan(matriz):
         if matriz[i][i] == 0:
             print("El sistema es Incompatible o Compatible indeterminado.")
             return None
-
+        #Pivote toma el valor del elemento de la diagonal principal en la fila i.
+        #Divide cada elemento de la fila por el pivote.
         pivote = matriz[i][i]
-
         for j in range(columnas):
             matriz[i][j] /= pivote
-
+        
+        #Verifica las demas filas(k), diferentes a las filas(i).
+        #Calcula el factor qUe es el coeficiente de col(i) en fila(k).
+        #Actualiza la fila(k) restando el producto del factor y los elementos de la fila(i).
         for k in range(filas):
             if k != i:
                 factor = matriz[k][i]
@@ -19,28 +22,28 @@ def gaussJordan(matriz):
                     matriz[k][j] -= factor * matriz[i][j]
     return matriz
 
-def determinar_tipo_sistema(matriz):
+def tipo_sistema(matriz):
     filas = len(matriz)
     columnas = len(matriz[0])
 
-    # Verificar si alguna fila es cero excepto en la columna de resultados (Incompatible)
+    #Verifica si alguna fila es cero excepto en la columna de resultados (Incompatible)
     for i in range(filas):
-        es_cero_excluyendo_igualdad = True
+        es_cero = True
         for j in range(columnas - 1):
             if matriz[i][j] != 0:
-                es_cero_excluyendo_igualdad = False
+                es_cero = False
                 break
-        if es_cero_excluyendo_igualdad and matriz[i][-1] != 0:
+        if es_cero and matriz[i][-1] != 0:
             return "Incompatible"
 
-    # Verificar si alguna fila es completamente cero (Compatible indeterminado)
+    #Verifica si alguna fila es completamente cero (Compatible indeterminado)
     for i in range(filas):
-        es_fila_completamente_cero = True
+        todo_cero = True
         for j in range(columnas):
             if matriz[i][j] != 0:
-                es_fila_completamente_cero = False
+                todo_cero = False
                 break
-        if es_fila_completamente_cero:
+        if todo_cero:
             return "Compatible indeterminado"
 
     # Si no se encontraron las condiciones anteriores, el sistema es compatible determinado
@@ -56,17 +59,17 @@ def ingresar_matriz():
         y = float(input(f"Ingrese el coeficiente de y: "))
         z = float(input(f"Ingrese el coeficiente de z: "))
         igualdad = float(input("Ingrese el valor de la igualdad: "))
-        ecuacion.extend([x, y, z, igualdad])
-        matriz.append(ecuacion)
+        ecuacion.extend([x, y, z, igualdad])#Agrega los valores a la lista como elementos individuales.
+        matriz.append(ecuacion)#Agrega la lista ecuación completa a la matriz.
     return matriz
 
 def mostrar_matriz(matriz):
-    print("\nMatriz final (sin la columna de soluciones):")
+    print("\nMatriz final:")
     for fila in matriz:
-        # Mostrar la fila sin la última columna (las soluciones)
+        #Muestra la fila sin la última columna (las soluciones)
         for num in fila[:-1]:
-            print(round(num, 2), end=" ")  # Mostrar el número redondeado con dos decimales
-        print()  # Nueva línea después de cada fila
+            print(round(num, 2), end=" ")  
+        print()  #Nueva línea después de cada fila
 
 def mostrar_soluciones(matriz):
     print("\n" + "-"*30)
