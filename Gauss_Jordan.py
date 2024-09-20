@@ -88,7 +88,7 @@ matriz = ingresar_matriz()
 resultado = gaussJordan(matriz)
 
 if resultado:
-    tipo_sistema = determinar_tipo_sistema(resultado)
+    tipo_sistema = tipo_sistema(resultado)
     print(f"\nEl sistema es: {tipo_sistema}")
     
     if tipo_sistema == "Compatible determinado":
