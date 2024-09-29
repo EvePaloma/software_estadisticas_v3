@@ -21,17 +21,28 @@ class Programa(Frame):
 
     def ingresos(self):
         validacion = self.register(self.validar)
-        cont_valores = Frame(self, width= 550, height= 200, bg = "PeachPuff2")
-        cont_valores.grid(row=0, column=0, columnspan=3, padx= 10, pady= 10, ipadx= 12)
+        self.cont_valores = Frame(self, width= 550, height= 200, bg = "PeachPuff2")
+        self.cont_valores.grid(row=0, column=0, columnspan=3, padx= 10, pady= 10, ipadx= 12)
         cont_boton = Frame(self, width= 100, height= 200, bg = "PeachPuff2")
         cont_boton.grid(row=0, column=3, padx=8, pady=10, ipadx= 10)
 
+
+        self.entradas = []  # Lista para almacenar los widgets de entrada de cada fila
+
+        # Crear las filas de entradas
+        for i in range(3):  # Puedes cambiar el rango si necesitas más filas
+            fila_entradas = self.x_y_z(i, self.cont_valores)
+            self.entradas.append(fila_entradas)
+            
         self.lista_1 = []
         self.lista_2 = []
         self.lista_3 = []
-        self.lista_1[0:4] = self.x_y_z(0, cont_valores)
-        self.lista_2[0:4] = self.x_y_z(1, cont_valores) 
-        self.lista_3[0:4] = self.x_y_z(2, cont_valores)
+        #self.lista_1[0:4] = self.x_y_z(0, cont_valores)
+        #self.lista_2[0:4] = self.x_y_z(1, cont_valores) 
+        #self.lista_3[0:4] = self.x_y_z(2, cont_valores)
+        self.x_y_z(0, self.cont_valores)
+        self.x_y_z(1, self.cont_valores) 
+        self.x_y_z(2, self.cont_valores)
 
         #self.x1, self.y1, self.z1 = self.x_y_z(0, cont_valores)
         #self.x2, self.y2, self.z2 = self.x_y_z(1, cont_valores)
@@ -46,7 +57,7 @@ class Programa(Frame):
     def x_y_z(self, fila, contenedor, estado = False):
         validacion = self.register(self.validar)
         color_fondo = "PeachPuff2"
-        self.x = StringVar()
+        self.x = DoubleVar()
         self.y = StringVar()
         self.z = StringVar()
         self.r = StringVar()
@@ -73,9 +84,10 @@ class Programa(Frame):
                 
     def evaluar(self):
         self.listas = [self.lista_1, self.lista_2, self.lista_3]
-        for lista in listas:
+        for lista in self.listas:
             for elemento in lista:
-                self.matriz.append(float(elemento))
+                #self.matriz.append(float(elemento))
+                print(self.x1)
         print(self.matriz)
 
 
