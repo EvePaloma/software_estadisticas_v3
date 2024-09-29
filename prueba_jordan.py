@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 
 class Programa(Frame):
     def __init__(self, master = None):
@@ -21,75 +22,105 @@ class Programa(Frame):
 
     def ingresos(self):
         validacion = self.register(self.validar)
-        self.cont_valores = Frame(self, width= 550, height= 200, bg = "PeachPuff2")
-        self.cont_valores.grid(row=0, column=0, columnspan=3, padx= 10, pady= 10, ipadx= 12)
+        cont_valores = Frame(self, width= 550, height= 200, bg = "PeachPuff2")
+        cont_valores.grid(row=0, column=0, columnspan=3, padx= 10, pady= 10, ipadx= 12)
         cont_boton = Frame(self, width= 100, height= 200, bg = "PeachPuff2")
         cont_boton.grid(row=0, column=3, padx=8, pady=10, ipadx= 10)
+        
+        color_fondo = "PeachPuff2"
 
+        #Ingresos de los valores de la primera lista de elementos
+        self.x1 = StringVar()
+        self.y1 = StringVar()
+        self.z1 = StringVar()
+        self.r1 = StringVar()
+        Label(cont_valores, text= "", bg = color_fondo).grid(row= 0, column=0, padx= 6)
+        Label(cont_valores, text="[ ", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= 0, column=1, pady = 12)
+        self.entry_x1 = Entry(cont_valores, validate="key", validatecommand=(validacion, '%P'))
+        self.entry_x1.config(textvariable= self.x1, font =("Verdana", 14), width= 5, justify= CENTER)
+        self.entry_x1.grid(row= 0, column= 2, pady = 10)
+        Label(cont_valores, text=" x + ", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= 0, column=3, pady = 10)
+        self.entry_y1 = Entry(cont_valores, validate="key", validatecommand=(validacion, '%P'))
+        self.entry_y1.config(textvariable= self.y1, font =("Verdana", 14), width= 5, justify= CENTER)
+        self.entry_y1.grid(row= 0, column= 4, pady = 10)
+        Label(cont_valores, text=" y + ", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= 0, column=5, pady = 10)
+        self.entry_z1 = Entry(cont_valores, validate="key", validatecommand=(validacion, '%P'))
+        self.entry_z1.config(textvariable= self.z1, font =("Verdana", 14), width= 5, justify= CENTER)
+        self.entry_z1.grid(row= 0, column= 6, pady = 10)
+        Label(cont_valores, text=" z |", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= 0, column=7, pady = 10)
+        self.entry_r1 = Entry(cont_valores, validate="key", validatecommand=(validacion, '%P'))
+        self.entry_r1.config(textvariable= self.r1, font =("Verdana", 14), width= 5, justify= CENTER)
+        self.entry_r1.grid(row= 0, column= 8, pady = 10)
+        Label(cont_valores, text=" ]", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= 0, column=9, pady = 10)
+        
+        #Ingreso de los valores de la segunda lista de elementos
+        self.x2 = StringVar()
+        self.y2 = StringVar()
+        self.z2 = StringVar()
+        self.r2 = StringVar()
+        Label(cont_valores, text= "", bg = color_fondo).grid(row= 1, column=0, padx= 6)
+        Label(cont_valores, text="[ ", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= 1, column=1, pady = 12)
+        self.entry_x2 = Entry(cont_valores, validate="key", validatecommand=(validacion, '%P'))
+        self.entry_x2.config(textvariable= self.x2, font =("Verdana", 14), width= 5, justify= CENTER)
+        self.entry_x2.grid(row= 1, column= 2, pady = 10)
+        Label(cont_valores, text=" x + ", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= 1, column=3, pady = 10)
+        self.entry_y2 = Entry(cont_valores, validate="key", validatecommand=(validacion, '%P'))
+        self.entry_y2.config(textvariable= self.y2, font =("Verdana", 14), width= 5, justify= CENTER)
+        self.entry_y2.grid(row= 1, column= 4, pady = 10)
+        Label(cont_valores, text=" y + ", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= 1, column=5, pady = 10)
+        self.entry_z2 = Entry(cont_valores, validate="key", validatecommand=(validacion, '%P'))
+        self.entry_z2.config(textvariable= self.z2, font =("Verdana", 14), width= 5, justify= CENTER)
+        self.entry_z2.grid(row= 1, column= 6, pady = 10)
+        Label(cont_valores, text=" z |", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= 1, column=7, pady = 10)
+        self.entry_r2 = Entry(cont_valores, validate="key", validatecommand=(validacion, '%P'))
+        self.entry_r2.config(textvariable= self.r2, font =("Verdana", 14), width= 5, justify= CENTER)
+        self.entry_r2.grid(row= 1, column= 8, pady = 10)
+        Label(cont_valores, text=" ]", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= 1, column=9, pady = 10)
 
-        self.entradas = []  # Lista para almacenar los widgets de entrada de cada fila
-
-        # Crear las filas de entradas
-        for i in range(3):  # Puedes cambiar el rango si necesitas más filas
-            fila_entradas = self.x_y_z(i, self.cont_valores)
-            self.entradas.append(fila_entradas)
-            
-        self.lista_1 = []
-        self.lista_2 = []
-        self.lista_3 = []
-        #self.lista_1[0:4] = self.x_y_z(0, cont_valores)
-        #self.lista_2[0:4] = self.x_y_z(1, cont_valores) 
-        #self.lista_3[0:4] = self.x_y_z(2, cont_valores)
-        self.x_y_z(0, self.cont_valores)
-        self.x_y_z(1, self.cont_valores) 
-        self.x_y_z(2, self.cont_valores)
-
-        #self.x1, self.y1, self.z1 = self.x_y_z(0, cont_valores)
-        #self.x2, self.y2, self.z2 = self.x_y_z(1, cont_valores)
-        #self.x3, self.y3, self.z3 = self.x_y_z(2, cont_valores)
+        #Ingreso de los valores de la segunda lista de elementos
+        self.x3 = StringVar()
+        self.y3 = StringVar()
+        self.z3 = StringVar()
+        self.r3 = StringVar()
+        Label(cont_valores, text= "", bg = color_fondo).grid(row= 2, column=0, padx= 6)
+        Label(cont_valores, text="[ ", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= 2, column=1, pady = 12)
+        self.entry_x3 = Entry(cont_valores, validate="key", validatecommand=(validacion, '%P'))
+        self.entry_x3.config(textvariable= self.x3, font =("Verdana", 14), width= 5, justify= CENTER)
+        self.entry_x3.grid(row= 2, column= 2, pady = 10)
+        Label(cont_valores, text=" x + ", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= 2, column=3, pady = 10)
+        self.entry_y3 = Entry(cont_valores, validate="key", validatecommand=(validacion, '%P'))
+        self.entry_y3.config(textvariable= self.y3, font =("Verdana", 14), width= 5, justify= CENTER)
+        self.entry_y3.grid(row= 2, column= 4, pady = 10)
+        Label(cont_valores, text=" y + ", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= 2, column=5, pady = 10)
+        self.entry_z3 = Entry(cont_valores, validate="key", validatecommand=(validacion, '%P'))
+        self.entry_z3.config(textvariable= self.z3, font =("Verdana", 14), width= 5, justify= CENTER)
+        self.entry_z3.grid(row= 2, column= 6, pady = 10)
+        Label(cont_valores, text=" z |", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= 2, column=7, pady = 10)
+        self.entry_r3 = Entry(cont_valores, validate="key", validatecommand=(validacion, '%P'))
+        self.entry_r3.config(textvariable= self.r3, font =("Verdana", 14), width= 5, justify= CENTER)
+        self.entry_r3.grid(row= 2, column= 8, pady = 10)
+        Label(cont_valores, text=" ]", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= 2, column=9, pady = 10)
 
         self.btn_guardar = Button(cont_boton, text="Evaluar", justify= CENTER, font =("Verdana", 14), command= self.evaluar)
         self.btn_guardar.grid(row = 1, column = 0)
 
         cont_resultado = Frame(self, width= 600, height= 300, bg = "PeachPuff3")
         cont_resultado.grid(row= 1, columnspan=4)
-
-    def x_y_z(self, fila, contenedor, estado = False):
-        validacion = self.register(self.validar)
-        color_fondo = "PeachPuff2"
-        self.x = DoubleVar()
-        self.y = StringVar()
-        self.z = StringVar()
-        self.r = StringVar()
-        Label(contenedor, text= "", bg = color_fondo).grid(row= fila, column=0, padx= 6)
-        Label(contenedor, text="[ ", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= fila, column=1, pady = 12)
-        self.entry_x = Entry(contenedor, validate="key", validatecommand=(validacion, '%P'))
-        self.entry_x.config(textvariable= self.x, font =("Verdana", 14), width= 5, justify= CENTER)
-        self.entry_x.grid(row= fila, column= 2, pady = 10)
-        Label(contenedor, text=" x + ", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= fila, column=3, pady = 10)
-        self.entry_y = Entry(contenedor, validate="key", validatecommand=(validacion, '%P'))
-        self.entry_y.config(textvariable= self.y, font =("Verdana", 14), width= 5, justify= CENTER)
-        self.entry_y.grid(row= fila, column= 4, pady = 10)
-        Label(contenedor, text=" y + ", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= fila, column=5, pady = 10)
-        self.entry_z = Entry(contenedor, validate="key", validatecommand=(validacion, '%P'))
-        self.entry_z.config(textvariable= self.z, font =("Verdana", 14), width= 5, justify= CENTER)
-        self.entry_z.grid(row= fila, column= 6, pady = 10)
-        Label(contenedor, text=" z |", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= fila, column=7, pady = 10)
-        self.entry_r = Entry(contenedor, validate="key", validatecommand=(validacion, '%P'))
-        self.entry_r.config(textvariable= self.r, font =("Verdana", 14), width= 5, justify= CENTER)
-        self.entry_r.grid(row= fila, column= 8, pady = 10)
-        Label(contenedor, text=" ]", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= fila, column=9, pady = 10)
-        
-        return(self.x, self.y, self.z, self.r)
                 
     def evaluar(self):
-        self.listas = [self.lista_1, self.lista_2, self.lista_3]
-        for lista in self.listas:
-            for elemento in lista:
-                #self.matriz.append(float(elemento))
-                print(self.x1)
-        print(self.matriz)
+        fila1 =[self.x1.get(), self.y1.get(), self.z1.get(), self.r1.get()]
+        fila2 =[self.x2.get(), self.y2.get(), self.z2.get(), self.r2.get()]
+        fila3 =[self.x3.get(), self.y3.get(), self.z3.get(), self.r3.get()]
+        lista_total = [fila1, fila2, fila3]
 
+        for lista in lista_total:
+            for elemento in lista:
+                try:
+                    elemento= float(elemento)
+                except:
+                    if elemento == "":
+                        elemento = 0
+        print(lista_total)
 
 
 ventana = Tk()
