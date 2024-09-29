@@ -7,6 +7,7 @@ class Programa(Frame):
         #self.pack_propagate(False) 
         self.pack(expand=True)
         self.ingresos()
+        self.matriz = []
     
     def validar_negativo(self, texto):
         texto = texto.strip()
@@ -16,7 +17,7 @@ class Programa(Frame):
             return False
 
     def validar(self, texto):
-        return texto.isdigit() or texto == "" or self.validar_negativo(texto) or len(texto) > 5
+        return texto.isdigit() or texto == "" or self.validar_negativo(texto) or len(texto) < 5
 
     def ingresos(self):
         validacion = self.register(self.validar)
@@ -28,19 +29,19 @@ class Programa(Frame):
         self.lista_1 = []
         self.lista_2 = []
         self.lista_3 = []
-        self.matriz = []
-
-        self.lista_1[0:3] = self.x_y_z(0,cont_valores) 
-        self.lista_2[0:3] = self.x_y_z(1,cont_valores) 
-        self.lista_3[0:3] = self.x_y_z(2,cont_valores) 
-
-        self.matriz = [self.lista_1, self.lista_2, self.lista_3]
+        self.lista_1[0:4] = self.x_y_z(0, cont_valores)
+        self.lista_2[0:4] = self.x_y_z(1, cont_valores) 
+        self.lista_3[0:4] = self.x_y_z(2, cont_valores)
 
         #self.x1, self.y1, self.z1 = self.x_y_z(0, cont_valores)
         #self.x2, self.y2, self.z2 = self.x_y_z(1, cont_valores)
         #self.x3, self.y3, self.z3 = self.x_y_z(2, cont_valores)
-        self.btn_guardar = Button(cont_boton, text="Evaluar", justify= CENTER, font =("Verdana", 14))
+
+        self.btn_guardar = Button(cont_boton, text="Evaluar", justify= CENTER, font =("Verdana", 14), command= self.evaluar)
         self.btn_guardar.grid(row = 1, column = 0)
+
+        cont_resultado = Frame(self, width= 600, height= 300, bg = "PeachPuff3")
+        cont_resultado.grid(row= 1, columnspan=4)
 
     def x_y_z(self, fila, contenedor, estado = False):
         validacion = self.register(self.validar)
@@ -48,6 +49,7 @@ class Programa(Frame):
         self.x = StringVar()
         self.y = StringVar()
         self.z = StringVar()
+        self.r = StringVar()
         Label(contenedor, text= "", bg = color_fondo).grid(row= fila, column=0, padx= 6)
         Label(contenedor, text="[ ", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= fila, column=1, pady = 12)
         self.entry_x = Entry(contenedor, validate="key", validatecommand=(validacion, '%P'))
@@ -61,13 +63,21 @@ class Programa(Frame):
         self.entry_z = Entry(contenedor, validate="key", validatecommand=(validacion, '%P'))
         self.entry_z.config(textvariable= self.z, font =("Verdana", 14), width= 5, justify= CENTER)
         self.entry_z.grid(row= fila, column= 6, pady = 10)
-        Label(contenedor, text=" z ]", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= fila, column=7, pady = 10)
-        if estado:
-            self.entry_x.config(state="readonly")
-            self.entry_y.config(state="readonly")
-            self.entry_z.config(state="readonly")
-        return(self.x, self.y, self.z)
+        Label(contenedor, text=" z |", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= fila, column=7, pady = 10)
+        self.entry_r = Entry(contenedor, validate="key", validatecommand=(validacion, '%P'))
+        self.entry_r.config(textvariable= self.r, font =("Verdana", 14), width= 5, justify= CENTER)
+        self.entry_r.grid(row= fila, column= 8, pady = 10)
+        Label(contenedor, text=" ]", font=("Verdana", 15), justify=CENTER, bg = color_fondo).grid(row= fila, column=9, pady = 10)
+        
+        return(self.x, self.y, self.z, self.r)
                 
+    def evaluar(self):
+        self.listas = [self.lista_1, self.lista_2, self.lista_3]
+        for lista in listas:
+            for elemento in lista:
+                self.matriz.append(float(elemento))
+        print(self.matriz)
+
 
 
 ventana = Tk()
