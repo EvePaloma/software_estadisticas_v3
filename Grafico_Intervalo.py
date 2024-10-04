@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from tabulate import tabulate
+from tkinter import messagebox
 from tkinter import *
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
@@ -15,6 +16,22 @@ class INTERVALOS(Frame):
         self.pack(expand=True)
         self.menu()
 
+    def str_to(self):
+        try:
+            self.a = float(self.valA.get())
+            self.b = float(self.valB.get())
+            self.c = float(self.valC.get())
+            self.Li = float(self.lim_inferior.get())
+            self.Ls = float(self.lim_superior.get())
+            try:
+                self.intervalo = int(self.intervalos.get())
+            except:
+                messagebox.showerror("Error", "El número de intervalos deber ser un valor entero")   
+            if self.Li > self.Ls:
+                messagebox.showerror("Error", "El límite inferior debe ser menor al límite superior")
+        except ValueError:
+            messagebox.showerror("Error", "Por favor, complete todos los campos con valores numéricos.")
+
     def validar(self, entrada):
         if entrada == "" or entrada == "-" or entrada == ".":  
             return True
@@ -25,26 +42,33 @@ class INTERVALOS(Frame):
             return False
     
     def funcion_cuad(self, x):
-        a = float(self.valA.get())
-        b = float(self.valB.get())
-        c = float(self.valC.get())
+        a = self.a
+        b = self.b
+        c = self.c
         #Función integral, ingresan los datos que de el usuario, el usuario ingresa los multiplicadores de x, x y el num
         y = a * (x**2) + b * x + c
         return (y)
 
+    """def calcular_error(self):
+        if self.area_exacta > self.area_aprox:
+            error = area_exacta - area_aprox
+        else:
+            error = area_aprox - area_exacta
+        return error"""
+
     #Calculamos la integral indefinida(antiderivada) de la función cuadrática
     def integral_indefinida(self, x):
-        a = float(self.valA.get())
-        b = float(self.valB.get())
-        c = float(self.valC.get())
+        a = self.a
+        b = self.b
+        c = self.c
         #Función integral, ingresan 
         return (a / 3) * (x ** 3) + (b / 2) * (x ** 2) + c * x
 
     #Calculamos el área exacta usando la integral definida
-    def area_exacta(self, Li, Ls):
+    def area_exacta(self):
         #Calculamos la integral indefinida en los límites superior e inferior
-        integral_superior = self.integral_indefinida(Ls)
-        integral_inferior = self.integral_indefinida(Li)
+        integral_superior = self.integral_indefinida(self.Ls)
+        integral_inferior = self.integral_indefinida(self.Li)
         
         #Área exacta es la diferencia entre los limites
         area = integral_superior - integral_inferior
@@ -129,21 +153,22 @@ class INTERVALOS(Frame):
 
     def graficar(self):
         #Gráfico inferior
-        n_intervalos = int(self.intervalos.get())
-        limI = float(self.lim_inferior.get())
-        limS = float(self.lim_superior.get())
+        self.str_to()
+        n_intervalos = self.intervalo
+        limI = self.Li
+        limS = self.Ls
 
         area_inferior, xbarI, ybarI = self.Riemann_inferior(limI, limS, n_intervalos)
         area_superior, xbarS, ybarS = self.Riemann_superior(limI, limS, n_intervalos)
 
-        area_exacta = self.area_exacta(limI, limS)
+        area_exacta = self.area_exacta()
 
         #Porcentaje de error
         error1 = ((area_exacta - area_inferior)/area_exacta)*100
         x = np.linspace(limI - 2, limS + 2, 25)  #Número de puntos que usamos para graficar la curva
 
         #grafico inferior
-        figI, axI = plt.subplots(figsize=(4.5, 3.5))
+        figI, axI = plt.subplots(figsize=(4.3, 3.3))
         axI.plot(x, self.funcion_cuad(x), 'k', label="f(x)")
         axI.plot(xbarI, ybarI, 'r:', label="Suma de Riemann Inferior")
         axI.set_xlabel("x")
@@ -161,7 +186,7 @@ class INTERVALOS(Frame):
         cnvI.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
 
         #Grafico superior
-        figS, axS = plt.subplots(figsize=(4.5, 3.5)) 
+        figS, axS = plt.subplots(figsize=(4.3, 3.3)) 
         axS.plot(x, self.funcion_cuad(x), 'k', label="f(x)")
         axS.plot(xbarS, ybarS, 'b:', label="Suma de Riemann Superior")
         axS.set_xlabel("x")
@@ -181,7 +206,7 @@ class INTERVALOS(Frame):
     def menu(self):
         validacion = self.register(self.validar)
         color = "PaleTurquoise3"
-        borde = LabelFrame(self, text= "Cálculo del área en intervalos", width= 1100, height= 600, bg= color)
+        borde = LabelFrame(self, text= "Cálculo del área en intervalos", width= 1200, height= 600, bg= color)
         borde.pack_propagate(False)
         borde.pack(expand=True, padx= 15, pady=15)
         
@@ -197,9 +222,9 @@ class INTERVALOS(Frame):
         contenedor = Frame(borde)
         contenedor.pack(pady= 10, padx= 20)
         self.contenedor_i = Frame(contenedor, width= 500, height= 400, bg="khaki1")
-        self.contenedor_i.grid(row=0, column=0, padx= 8, pady= 10)
+        self.contenedor_i.grid(row=0, column=0, padx= 8, pady= 8)
         self.contenedor_s = Frame(contenedor, width= 500, height= 400, bg="khaki2")
-        self.contenedor_s.grid(row= 0, column=1, padx= 8, pady= 10)
+        self.contenedor_s.grid(row= 0, column=1, padx= 8, pady= 8)
         
         #Ingreso de valores de la función
         self.valA = StringVar()
@@ -255,59 +280,8 @@ class INTERVALOS(Frame):
         self.canva_S.pack(padx= 10, pady= 10)
 
 
-ventana = Tk()
-ventana.wm_title("Grafico de Intervalos")
-#ventana.wm_resizable(0,0)
-entradas = INTERVALOS(ventana)
-entradas.mainloop()
 
 """
-#RECORDAR QUE PUEDEN ENTRAR VALORES NEGATIVOS
-#Aca ingresa el multiplicador de x al cuadrado
-valA = 1
-#Aca ingresa el valor del multiplicador de x
-valB = -2
-#Aca ingresa el valor del multplicador del num
-valC = 3
-
-
-
-#El usuario ingresa el valor menor del rango
-limiteInferior = 2
-#El usuario ingresa el valor mayor del rango
-limiteSuperior = 5
-#El usuario ingresa la cantidad de particiones que va a tener el rango
-cantidad_intervalos = 3
-
-
-
-
-print(Riemann_inferior(limiteInferior, limiteSuperior, cantidad_intervalos+1))
-
-
-
-
-print(Riemann_superior(limiteInferior, limiteSuperior, cantidad_intervalos))
-
-
-
-
-
-
-
-
-#Comparamos las áreas sin usar valor absoluto
-'''def calcular_error(area_exacta, area_aprox):
-    if area_exacta > area_aprox:
-        error = area_exacta - area_aprox
-    else:
-        error = area_aprox - area_exacta
-    return error'''
-
-
-
-
-print(Area_inferior)
 
 valor_area_exacta = area_exacta(limiteInferior, limiteSuperior, valA,valB,valC)
 #error_inf = calcular_error(valor_area_exacta,Area_inferior)
