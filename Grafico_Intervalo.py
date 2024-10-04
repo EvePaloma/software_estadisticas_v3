@@ -1,7 +1,111 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from tabulate import tabulate
+from tkinter import *
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
+from matplotlib.pyplot import text
+from matplotlib import style
 
+class INTERVALOS(Frame):
+    def __init__(self, master = None):
+        super().__init__(master, width = 1100, height = 650, bg = "DeepSkyBlue4")
+        self.master = master
+        self.pack_propagate(False) 
+        self.pack(expand=True)
+        self.menu()
+
+    def validar(self, entrada):
+        if entrada == "" or entrada == "-" or entrada == ".":  
+            return True
+        try:
+            float(entrada)
+            return True
+        except ValueError:
+            return False
+
+    def menu(self):
+        validacion = self.register(self.validar)
+        color = "PaleTurquoise3"
+        borde = LabelFrame(self, text= "Cálculo del área en intervalos", width= 1000, height= 600, bg= color)
+        borde.pack_propagate(False)
+        borde.pack(expand=True, padx= 15, pady=15)
+        cont_total = Frame(borde, bg= color)
+        cont_total.pack(pady= 40)
+        contenedor_funcion = Frame(cont_total, bg= color, width=600)
+        contenedor_funcion.grid(row=0, column=1, columnspan= 3, padx= 15)
+        contenedor_lim = Frame(cont_total, bg= color, width= 600)
+        contenedor_lim.grid(row=1, column=1, columnspan=3, pady= 30, sticky= W)
+        contenedor_btn = Frame(cont_total, bg= color, width= 200, height= 200)
+        contenedor_btn.grid(row=0, column= 4, rowspan=2)
+
+        contenedor = Frame(borde, bg= color)
+        contenedor.pack
+        contenedor_s = Frame(contenedor, width= 500, height= 400)
+        contenedor_s.grid(column=0)
+        contenedor_i = Frame(contenedor, width= 500, height= 400)
+        contenedor_i.grid(column=1)
+
+        #Ingreso de valores de la función
+        self.valA = StringVar()
+        self.valB = StringVar()
+        self.valC = StringVar()
+
+        self.A = Entry(contenedor_funcion, validate="key", validatecommand=(validacion, '%P'))
+        self.A.config(textvariable= self.valA, font=("Verdana", 15), justify=CENTER, width= 5)
+        self.A.grid(row= 1, column=1, pady=10)
+        Label(contenedor_funcion, text="  *  x^2  +  ", font=("Verdana", 16), justify=CENTER, bg= color).grid(row=1, column=2, pady=10)
+        self.B = Entry(contenedor_funcion, validate="key", validatecommand=(validacion, '%P'))
+        self.B.config(textvariable= self.valB, font=("Verdana", 15), justify=CENTER, width= 5)
+        self.B.grid(row= 1, column=3, pady=10)
+        Label(contenedor_funcion, text="  *  x  +  ", font=("Verdana", 16), justify=CENTER, bg= color).grid(row=1, column=4, pady=10)
+        self.C = Entry(contenedor_funcion, validate="key", validatecommand=(validacion, '%P'))
+        self.C.config(textvariable= self.valC, font=("Verdana", 15), justify=CENTER, width= 5)
+        self.C.grid(row= 1, column= 5, pady=10)
+        Label(contenedor_funcion, text="  =  y  ", font=("Verdana", 16), justify=CENTER, bg= color).grid(row=1, column=6, pady=10)
+
+        #Ingreso de limite inferior, superior e Intervalos
+        cont1 = Frame(contenedor_lim, bg= color)
+        cont1.grid(row= 0, column=0, padx= 11)
+        cont2 = Frame(contenedor_lim, bg= color)
+        cont2.grid(row= 0, column=1, padx= 25)
+        cont3 = Frame(contenedor_lim, bg= color)
+        cont3.grid(row= 0, column=2, padx= 10)
+
+        self.lim_inferior = StringVar()
+        self.lim_superiro = StringVar()
+        self.intervalos = StringVar()
+
+        Label(cont1, text="Límite Inferior:", font=("Verdana", 12), bg= color, justify= LEFT).grid(row=0, column=0)
+        self.inferior = Entry(cont1, validate="key", validatecommand=(validacion, '%P'))
+        self.inferior.config(textvariable= self.lim_inferior, font=("Verdana", 15), justify=CENTER, width= 8)
+        self.inferior.grid(row= 1, column=0, pady=8, padx= 4, sticky= W)
+        Label(cont2, text="Límite Superior:", font=("Verdana", 12), justify=LEFT, bg= color).grid(row=0, column=0)
+        self.superior = Entry(cont2, validate="key", validatecommand=(validacion, '%P'))
+        self.superior.config(textvariable= self.lim_superiro, font=("Verdana", 15), justify=CENTER, width= 8)
+        self.superior.grid(row= 1, column=0, pady=8, padx= 4, sticky= W)
+        Label(cont3, text="Nro. de Intervalos:", font=("Verdana", 12), justify=LEFT, bg= color).grid(row=0, column=0)
+        self.inter = Entry(cont3, validate="key", validatecommand=(validacion, '%P'))
+        self.inter.config(textvariable= self.intervalos, font=("Verdana", 15), justify=CENTER, width= 8)
+        self.inter.grid(row= 1, column= 0, pady=8, padx= 4, sticky= W)
+
+        #Botón para guardar los valores
+        self.btn_guardar = Button(contenedor_btn, text="Graficar", justify= CENTER, font=("Verdana", 13), width= 12)
+        self.btn_guardar.pack(padx= 25)
+
+        #Canva_Frame donde se van a mostrar los gráficos
+        canva = Canvas(contenedor_i, width= 500, height= 400, highlightbackground= "yellow3")
+        canva.pack()
+
+
+
+ventana = Tk()
+ventana.wm_title("Grafico de Intervalos")
+ventana.wm_resizable(0,0)
+entradas = INTERVALOS(ventana)
+entradas.mainloop()
+
+"""
 #RECORDAR QUE PUEDEN ENTRAR VALORES NEGATIVOS
 #Aca ingresa el multiplicador de x al cuadrado
 valA = 1
@@ -186,3 +290,4 @@ tabla = [['Inferior', n_intervalos, Area_inferior,error1],
          ]
 
 print(tabulate(tabla, headers = [""," Particion",  "Suma" , "Error (%)"])) 
+"""
