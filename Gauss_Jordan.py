@@ -88,9 +88,7 @@ class GaussJordan(Frame):
         if matriz[0][0] == 0 and matriz[0][3] != 0:
             return "Incompatible"  #No hay solución
         elif matriz[0][0] == 0 and matriz[0][3] == 0:
-            x = matriz[0][3]
-            y = matriz[1][3]
-            z = matriz[2][3]
+            
             return "Compatible indeterminado", (x, y, z)  #Infinitas soluciones
         else:
             #Solución única
