@@ -1,26 +1,72 @@
 from tkinter import *
 from tkinter import messagebox
 
-
 class GaussJordan(Frame):
     def __init__(self, master=None):
         super().__init__(master, width=700, height=400, bg="PeachPuff2")
         self.master = master
-        self.grid(row=0, column=0, sticky="nsew")
-        self.createWidgets()
-        #Almacena los valores de las entradas
+        self.pack_propagate(False) 
+        self.pack(expand=True)
+        self.grid()
+
+        #Contenedores
+        self.cont_valores = Frame(self, width=550, height=200, bg="PeachPuff2")
+        self.cont_valores.grid(row=0, column=0)
+
+        self.cont_resultados = Frame(self, width=600, height=600, bg="PeachPuff2")
+        self.cont_resultados.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
+        self.cont_resultados.grid_remove()
+
+        #Etiqueta para mostrar el tipo de sistema
+        self.label_tipo_sistema = Label(self, text="", font=("Verdana", 14), bg="PeachPuff2")
+        self.label_tipo_sistema.grid(row=3, column=0, pady=10)
+        self.label_tipo_sistema.grid_remove()
+
+        #Listas para almacenar las entradas
         self.lista_1 = []
         self.lista_2 = []
         self.lista_3 = []
-        #Crea las entradas para las 3 ecuaciones
+        self.resultados = []
+
+        # Crear entradas para las ecuaciones
         self.x_y_z(0, self.cont_valores)
         self.x_y_z(1, self.cont_valores)
         self.x_y_z(2, self.cont_valores)
 
+        btn_resolver = Button(self, text="Resolver", command=self.resolver, bg="PeachPuff2", font=("Verdana", 12, "bold"))
+        btn_resolver.grid(row=1, column=0, pady=10)
+
+        btn_volver = Button(self, text="Volver", command=self.volver, bg="PeachPuff2", font=("Verdana", 12, "bold"))
+        btn_volver.grid(row=4, column=0, pady=10)
+
+        #Etiquetas para mostrar resultados
+        self.crear_entradas_resultados()
+
     
-    #Validación de entrada
+    def crear_entradas_resultados(self):
+        #Entry para mostrar resultados
+        for i in range(3):
+            fila_resultados = []
+
+            for j in range(3):  #Para los coeficientes (columnas 0, 1, 2)
+                entry_resultado = Entry(self.cont_resultados, font=("Verdana", 14), width=5, justify=CENTER)
+                entry_resultado.config(bg="lightyellow", state='readonly')  
+                entry_resultado.grid(row=i, column=j, padx=15,pady=5)
+                fila_resultados.append(entry_resultado)  #Guarda los entries en la lista
+
+            barra_vertical = Label(self.cont_resultados, text="|", font=("Verdana", 12), bg="PeachPuff2")
+            barra_vertical.grid(row=i, column=3, padx=15, pady=5)
+
+            entry_independiente = Entry(self.cont_resultados, font=("Verdana", 14), width=5, justify=CENTER)
+            entry_independiente.config(bg="lightblue", state='readonly')  
+            entry_independiente.grid(row=i, column=4, padx=15,pady=5)
+            
+            fila_resultados.append(entry_independiente)  #Agrega el término independiente a la fila
+
+            self.resultados.append(fila_resultados)
+
     def validar(self, entrada):
-        if entrada == "" or entrada == "-" or entrada == ".":  
+        if entrada == "-" or entrada == ".":  
             return True
         try:
             float(entrada)
@@ -28,88 +74,6 @@ class GaussJordan(Frame):
         except ValueError:
             return False
 
-    # Método para calcular el resultado del sistema de ecuaciones
-    def calcular(self):
-        try:
-            #Lee los valores y resultados de la entrada
-            x1 = float(self.lista_1[0].get())
-            y1 = float(self.lista_1[1].get())
-            z1 = float(self.lista_1[2].get())
-            r1 = float(self.lista_1[3].get())
-
-            x2 = float(self.lista_2[0].get())
-            y2 = float(self.lista_2[1].get())
-            z2 = float(self.lista_2[2].get())
-            r2 = float(self.lista_2[3].get())
-
-            x3 = float(self.lista_3[0].get())
-            y3 = float(self.lista_3[1].get())
-            z3 = float(self.lista_3[2].get())
-            r3 = float(self.lista_3[3].get())
-
-            #Construye la matriz inicial
-            matriz = [[x1, y1, z1, r1],
-                      [x2, y2, z2, r2],
-                      [x3, y3, z3, r3]]
-
-            #Aplica el método de Gauss-Jordan
-            tipo_sistema, solucion = self.gauss_jordan(matriz)
-
-            #Mostramos los resultados
-            self.mostrar_resultados(matriz, tipo_sistema, solucion)
-        except ValueError:
-            messagebox.showerror("Error", "Por favor, ingrese valores válidos.")
-
-    # Método para aplicar el método de Gauss-Jordan
-    def gauss_jordan(self, matriz):
-        #Convierte a forma escalonada
-        for i in range(3):
-            #Hacer que el elemento de la diagonal sea 1
-            piv = matriz[i][i]
-            if piv == 0:
-                #Si hay un 0 en la diagonal, buscaremos otra fila para intercambiar
-                for j in range(i + 1, 3):
-                    if matriz[j][i] != 0:
-                        matriz[i], matriz[j] = matriz[j], matriz[i]
-                        piv = matriz[i][i]
-                        break
-
-            for j in range(len(matriz[i])):
-                matriz[i][j] /= piv
-
-            #Hacer ceros en la columna de la variable actual
-            for j in range(3):
-                if j != i:
-                    factor = matriz[j][i]
-                    for k in range(len(matriz[i])):
-                        matriz[j][k] -= factor * matriz[i][k]
-
-        #Verificamos el tipo de sistema
-        if matriz[0][0] == 0 and matriz[0][3] != 0:
-            return "Incompatible"  #No hay solución
-        elif matriz[0][0] == 0 and matriz[0][3] == 0:
-            
-            return "Compatible indeterminado", (x, y, z)  #Infinitas soluciones
-        else:
-            #Solución única
-            x = matriz[0][3]
-            y = matriz[1][3]
-            z = matriz[2][3]
-            return "Compatible determinado", (x, y, z)
-
-    #Mostramos los resultados y la matriz
-    def mostrar_resultados(self, matriz, tipo_sistema, solucion):
-        matriz_str = "\n".join(["\t".join([f"{num:.2f}" for num in fila]) for fila in matriz])
-        self.matriz_label.config(text=f"Matriz transformada:\n{matriz_str}", font=("Verdana", 12, "bold"))
-
-        self.tipo_sistema_label.config(text=f"Tipo de sistema: {tipo_sistema}", font=("Verdana", 12, "bold"))
-
-        if tipo_sistema == "Compatible determinado":
-            self.resultado_label.config(text=f"Resultados:\n x = {solucion[0]:.2f}\n y = {solucion[1]:.2f}\n z = {solucion[2]:.2f}", font=("Verdana", 12, "bold"))
-        else:
-            self.resultado_label.config(text=f"Tipo de sistema: {tipo_sistema}", font=("Verdana", 12, "bold"))
-
-    #Función para generar las entradas de las ecuaciones
     def x_y_z(self, fila, contenedor):
         validacion = self.register(self.validar)
         color_fondo = "PeachPuff2"
@@ -130,13 +94,13 @@ class GaussJordan(Frame):
         entry_z = Entry(contenedor, validate="key", validatecommand=(validacion, '%P'))
         entry_z.config(textvariable=z, font=("Verdana", 14), width=5, justify=CENTER)
         entry_z.grid(row=fila, column=6, pady=10)
-        Label(contenedor, text=" z |", font=("Verdana", 15), justify=CENTER, bg=color_fondo).grid(row=fila, column=7, pady=10)
+        Label(contenedor, text=" z =", font=("Verdana", 15), justify=CENTER, bg=color_fondo).grid(row=fila, column=7, pady=10)
         entry_r = Entry(contenedor, validate="key", validatecommand=(validacion, '%P'))
         entry_r.config(textvariable=r, font=("Verdana", 14), width=5, justify=CENTER)
         entry_r.grid(row=fila, column=8, pady=10)
         Label(contenedor, text=" ]", font=("Verdana", 15), justify=CENTER, bg=color_fondo).grid(row=fila, column=9, pady=10)
 
-        #Guardar las referencias de las entradas en las listas
+        #Guarda las referencias de las entradas en las listas
         if fila == 0:
             self.lista_1.extend([entry_x, entry_y, entry_z, entry_r])
         elif fila == 1:
@@ -144,38 +108,111 @@ class GaussJordan(Frame):
         elif fila == 2:
             self.lista_3.extend([entry_x, entry_y, entry_z, entry_r])
 
-    def createWidgets(self):
-        self.cont_valores = Frame(self,  width= 550, height= 200,bg="PeachPuff2")
-        self.cont_valores.grid(row=0, column=0)
+    def resolver(self):
+        try:
+            #Lee los coeficientes y constantes
+            A = []
+            b = []
 
-        self.cont_resultados = LabelFrame(self, width= 600, height= 600,bg="PeachPuff3")
-        self.cont_resultados.grid(row=2, column=0,padx=10,pady=10, sticky="nsew")
+            for fila in [self.lista_1, self.lista_2, self.lista_3]:
+                fila_coeficientes = [float(entry.get()) for entry in fila[:-1]]  #Coeficientes
+                A.append(fila_coeficientes)
+                b.append(float(fila[-1].get()))  #Término independiente
+            
+            # Aplicar el método de Gauss-Jordan
+            self.gauss_jordan(A, b)
+        except ValueError:
+            messagebox.showerror("Error", "Por favor, ingresa solo números válidos.")
 
-        btn = Button(self, text="Calcular", command=self.calcular, bg = "PeachPuff2",font=("Verdana", 12, "bold"))
-        btn.grid(row=1, column=0, pady=10)
-
-        self.tipo_sistema_label = Label(self.cont_resultados, text="", bg="PeachPuff3", font=("Verdana", 12))
-        self.tipo_sistema_label.grid(row=0, column=1)
+    def gauss_jordan(self, A, b):
+        n = len(A)       #Almacena el num de filas
         
-        self.resultado_label = Label(self.cont_resultados, text="", bg="PeachPuff3", font=("Verdana", 12))
-        self.resultado_label.grid(row=1, column=1)
+        for i in range(n):
+            #Verifica si el pivote es cero y busca otra fila para intercambiar
+            if A[i][i] == 0:
+                for j in range(i + 1, n):
+                    if A[j][i] != 0:
+                        A[i], A[j] = A[j], A[i]
+                        b[i], b[j] = b[j], b[i]
+                        
+            #Verifica nuevamente después del intercambio
+            if A[i][i] == 0:
+                continue  #Si no hay un pivote válido en esta fila va a continuar itinerando
 
-        self.matriz_label = Label(self.cont_resultados, text="", bg="PeachPuff3", font=("Verdana", 12))
-        self.matriz_label.grid(row=2, column=1)
+            #Se normaliza la fila dividiendo cada elemento de la fila por el valorde del pivote
+            pivote = A[i][i]
+            for j in range(n):
+                A[i][j] /= pivote
+            b[i] /= pivote
 
+            #Hacer ceros en la columna del pivote.
+            for j in range(n):
+                if j != i:
+                    factor = A[j][i]       #Calcula el factor usando el elemento de la fila que se quiere hacer 0
+                    for k in range(n):
+                        A[j][k] -= factor * A[i][k]       #Elemento - factor * fila del pivote
+                    b[j] -= factor * b[i]
+    
+        #Verifica el tipo de sistema y mostrar resultados
+        self.verificar_tipo_sistema(A, b)
+
+    def verificar_tipo_sistema(self, A, b):
+        n = len(A)
+        tipo_sistema = "Sistema Compatible Determinado"
+
+        for i in range(n):
+            #Si la fila es [0, 0, 0 | != 0] es incompatible
+            if all(A[i][j] == 0 for j in range(n)) and b[i] != 0:
+                tipo_sistema = "Sistema Incompatible: No tiene solución."
+                break
+                #self.label_tipo_sistema.config(text=tipo_sistema)
+                
+                
+            #Si la fila es [0, 0, 0 | 0] hay infinitas soluciones
+            elif all(A[i][j] == 0 for j in range(n)) and b[i] == 0:
+                tipo_sistema = "Sistema Compatible Indeterminado(SCI): Posee infinitas soluciones."
+                break
+                
+        self.label_tipo_sistema.config(text=tipo_sistema)        
+        self.label_tipo_sistema.grid() 
+
+        #Si el sistema es compatible determinado, muestra los resultados
+        if tipo_sistema == "Sistema Compatible Determinado":
+            self.mostrar_resultado(A, b)
+
+        #Muestra el tipo de sistema en la interfaz
+            self.label_tipo_sistema.config(text=tipo_sistema)
+
+
+    def mostrar_resultado(self, A, b):
+        for i in range(3):
+            for j in range(3):
+                #Muestra la matriz transformada
+                self.resultados[i][j].config(state=NORMAL)
+                self.resultados[i][j].delete(0, END)
+                self.resultados[i][j].insert(0, round(A[i][j], 2))
+                self.resultados[i][j].config(state="readonly")
+                
+            #Muestra el vector de resultados
+            self.resultados[i][3].config(state=NORMAL)
+            self.resultados[i][3].delete(0, END)
+            self.resultados[i][3].insert(0, round(b[i], 2))
+            self.resultados[i][3].config(state="readonly")
+
+        self.cont_resultados.grid()    
+         
+    def volver(self):
+        for entradas in [self.lista_1, self.lista_2, self.lista_3]:
+            for entry in entradas:
+                entry.delete(0, END)
+        self.cont_resultados.grid_remove()
+        self.label_tipo_sistema.grid_remove()
 
 ventana = Tk()
 ventana.wm_title("Método Gauss-Jordan")
 ventana.wm_resizable(0, 0)
 entradas = GaussJordan(ventana)
 entradas.mainloop()
-
-
-
-
-
-
-
 
 
 
