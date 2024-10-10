@@ -130,7 +130,7 @@ class GaussJordan(Frame):
         entry_z = Entry(contenedor, validate="key", validatecommand=(validacion, '%P'))
         entry_z.config(textvariable=z, font=("Verdana", 14), width=5, justify=CENTER)
         entry_z.grid(row=fila, column=6, pady=10)
-        Label(contenedor, text=" z |", font=("Verdana", 15), justify=CENTER, bg=color_fondo).grid(row=fila, column=7, pady=10)
+        Label(contenedor, text=" z =", font=("Verdana", 15), justify=CENTER, bg=color_fondo).grid(row=fila, column=7, pady=10)
         entry_r = Entry(contenedor, validate="key", validatecommand=(validacion, '%P'))
         entry_r.config(textvariable=r, font=("Verdana", 14), width=5, justify=CENTER)
         entry_r.grid(row=fila, column=8, pady=10)
