@@ -3,17 +3,20 @@ from tkinter import messagebox
 
 class GaussJordan(Frame):
     def __init__(self, master=None):
-        super().__init__(master, width=700, height=400, bg="PeachPuff2")
+        super().__init__(master, width=1100, height=600, bg="PeachPuff2")
         self.master = master
         self.pack_propagate(False) 
         self.pack(expand=True)
         self.grid()
+        
 
         #Contenedores
-        self.cont_valores = Frame(self, width=550, height=200, bg="PeachPuff2")
+        self.cont_valores = Frame(self, width=900, height=500, bg="PeachPuff2")
         self.cont_valores.grid(row=0, column=0)
+        self.cont_valores.grid_rowconfigure(0, weight=1)
+        self.cont_valores.grid_columnconfigure(0, weight=1)
 
-        self.cont_resultados = Frame(self, width=600, height=600, bg="PeachPuff2")
+        self.cont_resultados = Frame(self, width=800, height=400, bg="PeachPuff2")
         self.cont_resultados.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
         self.cont_resultados.grid_remove()
 
@@ -208,11 +211,12 @@ class GaussJordan(Frame):
         self.cont_resultados.grid_remove()
         self.label_tipo_sistema.grid_remove()
 
-ventana = Tk()
+
+'''ventana = Tk()
 ventana.wm_title("Método Gauss-Jordan")
 ventana.wm_resizable(0, 0)
 entradas = GaussJordan(ventana)
-entradas.mainloop()
+entradas.mainloop()'''
 
 
 
