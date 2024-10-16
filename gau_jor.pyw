@@ -186,7 +186,7 @@ class GaussJordan(Frame):
         self.lista_3 = []
 
         #Primera fila de los ingresos
-        Label(cont_f1, text="[ ", font=("Robot", 15), justify=CENTER, bg=self.color_fondo).grid(row= 0, column=1, pady=12)
+        Label(cont_f1, text= "⌈ ", font=("Robot", 18), justify=CENTER, bg=self.color_fondo).grid(row= 0, column=1, pady=12)
         self.entry_x1 = Entry(cont_f1, validate="key", validatecommand=(validacion, '%P'))
         self.entry_x1.config(font=("Robot", 14), width=5, justify=CENTER)
         self.entry_x1.grid(row= 0, column=2, pady=10)
@@ -202,11 +202,11 @@ class GaussJordan(Frame):
         self.entry_r1 = Entry(cont_f1, validate="key", validatecommand=(validacion, '%P'))
         self.entry_r1.config(font=("Robot", 14), width=5, justify=CENTER)
         self.entry_r1.grid(row= 0, column=8, pady=10)
-        Label(cont_f1, text=" ]", font=("Robot", 15), justify=CENTER, bg=self.color_fondo).grid(row= 0, column=9, pady=10)
+        Label(cont_f1, text=" ⌉", font=("Robot", 18), justify=CENTER, bg=self.color_fondo).grid(row= 0, column=9, pady=10)
         self.lista_1.extend([self.entry_x1, self.entry_y1, self.entry_z1, self.entry_r1])
 
         #Segunda fila de los ingresos
-        Label(cont_f2, text="[ ", font=("Robot", 15), justify=CENTER, bg=self.color_fondo).grid(row= 0, column=1, pady=12)
+        Label(cont_f2, text="|  ", font=("Robot", 17), justify=CENTER, bg=self.color_fondo).grid(row= 0, column=1, pady=12)
         self.entry_x2 = Entry(cont_f2, validate="key", validatecommand=(validacion, '%P'))
         self.entry_x2.config(font=("Robot", 14), width=5, justify=CENTER)
         self.entry_x2.grid(row= 0, column=2, pady=10)
@@ -222,11 +222,11 @@ class GaussJordan(Frame):
         self.entry_r2 = Entry(cont_f2, validate="key", validatecommand=(validacion, '%P'))
         self.entry_r2.config(font=("Robot", 14), width=5, justify=CENTER)
         self.entry_r2.grid(row= 0, column=8, pady=10)
-        Label(cont_f2, text=" ]", font=("Robot", 15), justify=CENTER, bg=self.color_fondo).grid(row= 0, column=9, pady=10)
+        Label(cont_f2, text="  |", font=("Robot", 17), justify=CENTER, bg=self.color_fondo).grid(row= 0, column=9, pady=10)
         self.lista_2.extend([self.entry_x2, self.entry_y2, self.entry_z2, self.entry_r2])
 
         #Tercera fila de los ingresos
-        Label(cont_f3, text="[ ", font=("Robot", 15), justify=CENTER, bg=self.color_fondo).grid(row= 0, column=1, pady=12)
+        Label(cont_f3, text="⌊ ", font=("Robot", 18), justify=CENTER, bg=self.color_fondo).grid(row= 0, column=1, pady=12)
         self.entry_x3 = Entry(cont_f3, validate="key", validatecommand=(validacion, '%P'))
         self.entry_x3.config(font=("Robot", 14), width=5, justify=CENTER)
         self.entry_x3.grid(row= 0, column=2, pady=10)
@@ -242,7 +242,7 @@ class GaussJordan(Frame):
         self.entry_r3 = Entry(cont_f3, validate="key", validatecommand=(validacion, '%P'))
         self.entry_r3.config(font=("Robot", 14), width=5, justify=CENTER)
         self.entry_r3.grid(row= 0, column=8, pady=10)
-        Label(cont_f3, text=" ]", font=("Robot", 15), justify=CENTER, bg=self.color_fondo).grid(row= 0, column=9, pady=10)
+        Label(cont_f3, text=" ⌋", font=("Robot", 18), justify=CENTER, bg=self.color_fondo).grid(row= 0, column=9, pady=10)
         self.lista_3.extend([self.entry_x3, self.entry_y3, self.entry_z3, self.entry_r3])
 
         #boton resolver
