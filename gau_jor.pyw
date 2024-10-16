@@ -12,13 +12,14 @@ class GaussJordan(Frame):
         self.activado = False
 
     def validar(self, entrada):
-        if entrada == "-" or entrada == ".":  
+        if entrada == "-" or entrada == "." or entrada == "":  
             return True
         try:
             float(entrada)
             return True
         except ValueError:
             return False
+
     def resolver(self):
         try:
             #Lee los coeficientes y constantes
@@ -34,26 +35,21 @@ class GaussJordan(Frame):
             self.gauss_jordan(A, b)
         except ValueError:
             messagebox.showerror("Error", "Por favor, ingresa solo números válidos.")
-    
+
     def limpiar(self):
-        self.entry_x1.delete(0, END)
-        self.entry_x2.delete(0, END)
-        self.entry_x3.delete(0, END)
-        self.entry_y1.delete(0, END)
-        self.entry_y2.delete(0, END)
-        self.entry_y3.delete(0, END)
-        self.entry_z1.delete(0, END)
-        self.entry_z2.delete(0, END)
-        self.entry_z3.delete(0, END)
-        self.entry_r1.delete(0, END)
-        self.entry_r2.delete(0, END)
-        self.entry_r3.delete(0, END)
-        for fila in self.resultados:
+        # Limpiar los valores de las entradas
+        for fila in [self.lista_1, self.lista_2, self.lista_3]:
             for entry in fila:
                 entry.delete(0, END)
-        if self.activado:
-            self.cont_rta.pack_forget()
-            self.activado = False
+        
+        # Si querés restablecer listas a 0, podés hacerlo aquí
+        self.resultados = []
+        self.activado = False
+
+        # Si tenés alguna interfaz que muestra resultados o mensajes, también podés reiniciar su contenido
+        self.label_tipo_sistema.config(text="")  # Si querés limpiar el texto del label de tipo de sistema
+        if hasattr(self, 'cont_rta'):
+            self.cont_rta.pack_forget() 
 
     def volver(self):   
         self.master.destroy()
