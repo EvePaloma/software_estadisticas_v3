@@ -24,7 +24,7 @@ class MENU(Frame):
         ventana = Tk()
         ventana.wm_title("Método de Gauss-Jordan")
         ventana.wm_resizable(0,0)
-        ventana.wm_geometry("+150+50")
+        ventana.wm_geometry("+0+0")
         entradas = GaussJordan(ventana)
         entradas.mainloop()
 

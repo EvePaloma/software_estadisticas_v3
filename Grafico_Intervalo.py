@@ -68,6 +68,7 @@ class INTERVALOS(Frame):
 
     def volver(self):   
         self.master.destroy()
+        self.master.master.deiconify()
 
     def funcion_cuad(self, x):
         a = self.a

@@ -3,7 +3,7 @@ from tkinter import messagebox
 
 class GaussJordan(Frame):
     def __init__(self, master=None):
-        super().__init__(master, width=1000, height=600, bg="#ba5954")
+        super().__init__(master, width=1350, height=700, bg="#ba5954")
         self.master = master
         self.pack_propagate(False) 
         self.pack(expand=True)
@@ -158,8 +158,8 @@ class GaussJordan(Frame):
         self.color_fondo = "#e0cbc1"
         validacion = self.register(self.validar)
         #contenedor de todo
-        self.cont_total= Label(self, bg="#e0cbc1")
-        self.cont_total.pack(pady= 30, ipadx=20, ipady=20) 
+        self.cont_total= Label(self, bg="#e0cbc1", width= 1100, height=680)
+        self.cont_total.pack(pady= 70, ipadx=20, ipady=20) 
         #contenedor ingresos
         self.cont_valores = Frame(self.cont_total, width=800, height=200, bg="#e0cbc1")
         self.cont_valores.pack_propagate(False)
@@ -266,6 +266,7 @@ class GaussJordan(Frame):
 """ventana = Tk()
 ventana.wm_title("Método Gauss-Jordan")
 ventana.wm_resizable(0, 0)
-ventana.geometry("+150+50")
+ventana.geometry("+0+0")
 entradas = GaussJordan(ventana)
-entradas.mainloop()"""
+entradas.mainloop()
+"""
