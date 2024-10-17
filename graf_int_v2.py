@@ -50,7 +50,7 @@ class INTERVALOS(Frame):
         for val in valore:
             val = 0
 
-        #limpia camba 1
+        #limpia canva 1
         for widget in self.canva_I.winfo_children():
             widget.destroy()
         #limpia canva 2
