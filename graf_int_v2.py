@@ -10,11 +10,12 @@ from matplotlib import style
 
 class INTERVALOS(Frame):
     def __init__(self, master = None):
-        super().__init__(master, width = 1200, height = 700, bg = "#ba5954")
+        super().__init__(master, width = 1350, height = 700, bg = "#ba5954")
         self.master = master
         self.pack_propagate(False) 
         self.pack(expand=True)
         self.menu()
+        self.error = True
 
     def str_to(self):
         try:
@@ -25,12 +26,18 @@ class INTERVALOS(Frame):
             self.Ls = float(self.lim_superior.get())
             try:
                 self.intervalo = int(self.intervalos.get())
+                if self.intervalo <= 0:
+                    messagebox.showerror("Error", "El número de intervalos debe ser un valor positivo")
+                    self.error = False
+                else:
+                    self.error = True
             except:
                 messagebox.showerror("Error", "El número de intervalos deber ser un valor entero")   
             if self.Li > self.Ls:
                 messagebox.showerror("Error", "El límite inferior debe ser menor al límite superior")
         except ValueError:
             messagebox.showerror("Error", "Por favor, complete todos los campos con valores numéricos.")
+            self.error = False
 
     def validar(self, entrada):
         if entrada == "" or entrada == "-" or entrada == ".":  
@@ -175,87 +182,88 @@ class INTERVALOS(Frame):
         for widget in self.canva_S.winfo_children():
             widget.destroy()
         if hasattr(self, 'rta'):
-            self.rta.pack_forget() 
+            self.rta.pack_forget()
 
         #Gráfico inferior
         self.str_to()
-        n_intervalos = self.intervalo
-        limI = self.Li
-        limS = self.Ls
-        if self.a < 0:
-            area_superior, xbarS, ybarS = self.Riemann_inferior(limI, limS, n_intervalos)
-            area_inferior, xbarI, ybarI  = self.Riemann_superior(limI, limS, n_intervalos)
-        else:
-            area_inferior, xbarI, ybarI = self.Riemann_inferior(limI, limS, n_intervalos)
-            area_superior, xbarS, ybarS = self.Riemann_superior(limI, limS, n_intervalos)
-        area_exacta = self.area_exacta()
+        if self.error:
+            n_intervalos = self.intervalo
+            limI = self.Li
+            limS = self.Ls
+            if self.a < 0:
+                area_superior, xbarS, ybarS = self.Riemann_inferior(limI, limS, n_intervalos)
+                area_inferior, xbarI, ybarI  = self.Riemann_superior(limI, limS, n_intervalos)
+            else:
+                area_inferior, xbarI, ybarI = self.Riemann_inferior(limI, limS, n_intervalos)
+                area_superior, xbarS, ybarS = self.Riemann_superior(limI, limS, n_intervalos)
+            area_exacta = self.area_exacta()
 
-        #Porcentaje de error
-        if area_inferior < 0:
-            error1 = round((((area_inferior * -1) - area_exacta)/area_exacta)*100, 3)
-        else:
-            error1 = round(((area_inferior - area_exacta)/area_exacta)*100, 3)
-        
-        if area_superior < 0:
-            error2 = round((((area_superior * -1) - area_exacta)/area_exacta)*100, 3)
-        else:
-            error2= round(((area_superior - area_exacta)/area_exacta)*100, 3)
-        
-        x = np.linspace(limI - 2, limS + 2, 25)  #Número de puntos que usamos para graficar la curva
-        #grafico inferior
-        figI, axI = plt.subplots(figsize=(4.5, 3.5))
-        axI.plot(x, self.funcion_cuad(x), 'k', label="f(x)")
-        axI.plot(xbarI, ybarI, 'r:', label="Suma de Riemann Inferior")
-        axI.set_xlabel("x")
-        axI.set_ylabel("f(x)")
-        axI.set_title("Grafica de f(x)")
-        axI.legend()
-        # borra lo del canvas
-        for widget in self.canva_I.winfo_children():
-            widget.destroy()
-        # pone la figura en el canvas
-        cnvI = FigureCanvasTkAgg(figI, master=self.canva_I)
-        cnvI.draw()
-        cnvI.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
+            #Porcentaje de error
+            if area_inferior < 0:
+                error1 = round((((area_inferior * -1) - area_exacta)/area_exacta)*100, 3)
+            else:
+                error1 = round(((area_inferior - area_exacta)/area_exacta)*100, 3)
+            
+            if area_superior < 0:
+                error2 = round((((area_superior * -1) - area_exacta)/area_exacta)*100, 3)
+            else:
+                error2= round(((area_superior - area_exacta)/area_exacta)*100, 3)
+            
+            x = np.linspace(limI - 2, limS + 2, 25)  #Número de puntos que usamos para graficar la curva
+            #grafico inferior
+            figI, axI = plt.subplots(figsize=(4.5, 3.5))
+            axI.plot(x, self.funcion_cuad(x), 'k', label="f(x)")
+            axI.plot(xbarI, ybarI, 'r:', label="Suma de Riemann Inferior")
+            axI.set_xlabel("x")
+            axI.set_ylabel("f(x)")
+            axI.set_title("Grafica de f(x)")
+            axI.legend()
+            # borra lo del canvas
+            for widget in self.canva_I.winfo_children():
+                widget.destroy()
+            # pone la figura en el canvas
+            cnvI = FigureCanvasTkAgg(figI, master=self.canva_I)
+            cnvI.draw()
+            cnvI.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
 
-        #Grafico superior
-        figS, axS = plt.subplots(figsize=(4.5, 3.5)) 
-        axS.plot(x, self.funcion_cuad(x), 'k', label="f(x)")
-        axS.plot(xbarS, ybarS, 'b:', label="Suma de Riemann Superior")
-        axS.set_xlabel("x")
-        axS.set_ylabel("f(x)")
-        axS.set_title("Grafica de f(x)")
-        axS.legend()
-        # borra lo del canvas
-        for widget in self.canva_S.winfo_children():
-            widget.destroy()
-        # pone la figura en el canvas
-        cnvS = FigureCanvasTkAgg(figS, master=self.canva_S)
-        cnvS.draw()
-        cnvS.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
+            #Grafico superior
+            figS, axS = plt.subplots(figsize=(4.5, 3.5)) 
+            axS.plot(x, self.funcion_cuad(x), 'k', label="f(x)")
+            axS.plot(xbarS, ybarS, 'b:', label="Suma de Riemann Superior")
+            axS.set_xlabel("x")
+            axS.set_ylabel("f(x)")
+            axS.set_title("Grafica de f(x)")
+            axS.legend()
+            # borra lo del canvas
+            for widget in self.canva_S.winfo_children():
+                widget.destroy()
+            # pone la figura en el canvas
+            cnvS = FigureCanvasTkAgg(figS, master=self.canva_S)
+            cnvS.draw()
+            cnvS.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
 
-        #ingresa loa labels al sistema
-        self.rta = Frame(self.con_resultado, bg= self.color)
-        self.rta.pack(expand= True)
-        real = "Área Exacta: " + str(round(area_exacta, 3))
-        self.label_real = Label(self.rta, text= real, font=("Verdana", 12), bg= self.color)
-        self.label_real.grid(row=0, column=0, columnspan=2)
-        inferior = "Área Inferior: " + str(round(area_inferior,2))
-        self.label_inferior = Label(self.rta, text= inferior, font=("Verdana", 12), bg= self.color)
-        self.label_inferior.grid(row=1, column=0, padx= 25, sticky= W)
-        superior = "Área Superior: " + str(round(area_superior,2))
-        self.label_superior = Label(self.rta, text= superior, font=("Verdana", 12), bg= self.color)
-        self.label_superior.grid(row=2, column=0, padx= 25, sticky= W)
-        error_inferior = "(%) error inferior: " + str(error1)
-        self.label_errI = Label(self.rta, text= error_inferior, font=("Verdana", 12), bg= self.color)
-        self.label_errI.grid(row=1, column=1, padx= 25, sticky= W)
-        error_superior = "(%) error superior: " + str(error2)
-        self.label_errS= Label(self.rta, text= error_superior, font=("Verdana", 12), bg= self.color)
-        self.label_errS.grid(row=2, column=1, padx= 25, sticky= W)
+            #ingresa loa labels al sistema
+            self.rta = Frame(self.con_resultado, bg= self.color)
+            self.rta.pack(expand= True)
+            real = "Área Exacta: " + str(round(area_exacta, 3))
+            self.label_real = Label(self.rta, text= real, font=("Verdana", 12), bg= self.color)
+            self.label_real.grid(row=0, column=0, columnspan=2)
+            inferior = "Área Inferior: " + str(round(area_inferior,2))
+            self.label_inferior = Label(self.rta, text= inferior, font=("Verdana", 12), bg= self.color)
+            self.label_inferior.grid(row=1, column=0, padx= 25, sticky= W)
+            superior = "Área Superior: " + str(round(area_superior,2))
+            self.label_superior = Label(self.rta, text= superior, font=("Verdana", 12), bg= self.color)
+            self.label_superior.grid(row=2, column=0, padx= 25, sticky= W)
+            error_inferior = "(%) error inferior: " + str(error1)
+            self.label_errI = Label(self.rta, text= error_inferior, font=("Verdana", 12), bg= self.color)
+            self.label_errI.grid(row=1, column=1, padx= 25, sticky= W)
+            error_superior = "(%) error superior: " + str(error2)
+            self.label_errS= Label(self.rta, text= error_superior, font=("Verdana", 12), bg= self.color)
+            self.label_errS.grid(row=2, column=1, padx= 25, sticky= W)
 
-        valore = [self.a, self.b, self.c, self.Li, self.Ls, self.intervalo]
-        for val in valore:
-            val = 0
+            valore = [self.a, self.b, self.c, self.Li, self.Ls, self.intervalo]
+            for val in valore:
+                val = 0
 
     def menu(self):
         #contenedor principal
@@ -354,6 +362,6 @@ class INTERVALOS(Frame):
 ventana = Tk()
 ventana.wm_title("Cálculo de área")
 ventana.wm_resizable(0,0)
-ventana.wm_geometry("+60+0")
+ventana.wm_geometry("+0+0")
 entradas = INTERVALOS(ventana)
 entradas.mainloop()
