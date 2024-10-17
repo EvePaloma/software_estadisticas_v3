@@ -358,9 +358,9 @@ class INTERVALOS(Frame):
         btn_limpiar.grid(row=0, column=1, padx=20)
 
 
-ventana = Tk()
+"""ventana = Tk()
 ventana.wm_title("Cálculo de área")
 ventana.wm_resizable(0,0)
 ventana.wm_geometry("+0+0")
 entradas = INTERVALOS(ventana)
-entradas.mainloop()
+entradas.mainloop()"""

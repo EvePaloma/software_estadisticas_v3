@@ -12,20 +12,19 @@ class MENU(Frame):
         self.menu()
         self.master.state('zoomed')
         
-
     def mostrar_grafico(self):
-        self.master.destroy()
         ventana = Tk()
-        ventana.wm_title("Grafico de Intervalos")
-        #ventana.wm_resizable(0,0)
+        ventana.wm_title("Cálculo de Área")
+        ventana.wm_resizable(0,0)
+        ventana.wm_geometry("+0+0")
         entradas = INTERVALOS(ventana)
         entradas.mainloop()
 
     def mostrar_gauss(self):
-        self.master.destroy()
         ventana = Tk()
         ventana.wm_title("Método de Gauss-Jordan")
-        #ventana.wm_resizable(0,0)
+        ventana.wm_resizable(0,0)
+        ventana.wm_geometry("+150+50")
         entradas = GaussJordan(ventana)
         entradas.mainloop()
 
@@ -52,6 +51,6 @@ class MENU(Frame):
 if __name__ == "__main__":
     ventana = Tk()
     ventana.wm_title("Menú software estadísticas")
-    #ventana.wm_resizable(0,0)
+    ventana.wm_resizable(0,0)
     menu = MENU(ventana)
     menu.mainloop()
