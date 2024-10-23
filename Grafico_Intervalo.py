@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from tabulate import tabulate
 from tkinter import messagebox
 from tkinter import *
 from matplotlib.figure import Figure
@@ -69,6 +68,7 @@ class INTERVALOS(Frame):
 
     def volver(self):   
         self.master.destroy()
+        self.master.master.deiconify()
 
     def funcion_cuad(self, x):
         a = self.a
@@ -95,9 +95,7 @@ class INTERVALOS(Frame):
         
         #Área exacta es la diferencia entre los limites
         area = integral_superior - integral_inferior
-        if area < 0:
-            area = -1 * area
-        return area
+        return abs(area)
 
     #Función que calcula los rectangulos de abajo de la función
     #Se ingresa la función, el limite menor, el límite mayor, y la cantidad de intervalitos
@@ -199,24 +197,17 @@ class INTERVALOS(Frame):
             area_exacta = self.area_exacta()
 
             #Porcentaje de error
-            if area_inferior < 0:
-                error1 = round((((area_inferior * -1) - area_exacta)/area_exacta)*100, 3)
-            else:
-                error1 = round(((area_inferior - area_exacta)/area_exacta)*100, 3)
-            
-            if area_superior < 0:
-                error2 = round((((area_superior * -1) - area_exacta)/area_exacta)*100, 3)
-            else:
-                error2= round(((area_superior - area_exacta)/area_exacta)*100, 3)
-            
+            error1 = round((abs((abs(area_inferior) - area_exacta)/area_exacta)*100), 3)
+            error2 = round((abs((abs(area_superior) - area_exacta)/area_exacta)*100), 3)
+
             x = np.linspace(limI - 2, limS + 2, 25)  #Número de puntos que usamos para graficar la curva
             #grafico inferior
-            figI, axI = plt.subplots(figsize=(4.5, 3.5))
+            figI, axI = plt.subplots(figsize=(4.5, 3.7))
             axI.plot(x, self.funcion_cuad(x), 'k', label="f(x)")
             axI.plot(xbarI, ybarI, 'r:', label="Suma de Riemann Inferior")
             axI.set_xlabel("x")
             axI.set_ylabel("f(x)")
-            axI.set_title("Grafica de f(x)")
+            axI.set_title("Gráfica de f(x)")
             axI.legend()
             # borra lo del canvas
             for widget in self.canva_I.winfo_children():
@@ -227,12 +218,12 @@ class INTERVALOS(Frame):
             cnvI.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
 
             #Grafico superior
-            figS, axS = plt.subplots(figsize=(4.5, 3.5)) 
+            figS, axS = plt.subplots(figsize=(4.5, 3.7)) 
             axS.plot(x, self.funcion_cuad(x), 'k', label="f(x)")
             axS.plot(xbarS, ybarS, 'b:', label="Suma de Riemann Superior")
             axS.set_xlabel("x")
             axS.set_ylabel("f(x)")
-            axS.set_title("Grafica de f(x)")
+            axS.set_title("Gráfica de f(x)")
             axS.legend()
             # borra lo del canvas
             for widget in self.canva_S.winfo_children():
@@ -254,10 +245,10 @@ class INTERVALOS(Frame):
             superior = "Área Superior: " + str(round(area_superior,2))
             self.label_superior = Label(self.rta, text= superior, font=("Verdana", 12), bg= self.color)
             self.label_superior.grid(row=2, column=0, padx= 25, sticky= W)
-            error_inferior = "(%) error inferior: " + str(error1)
+            error_inferior = "(%) Error Inferior: " + str(error1)
             self.label_errI = Label(self.rta, text= error_inferior, font=("Verdana", 12), bg= self.color)
             self.label_errI.grid(row=1, column=1, padx= 25, sticky= W)
-            error_superior = "(%) error superior: " + str(error2)
+            error_superior = "(%) Error Superior: " + str(error2)
             self.label_errS= Label(self.rta, text= error_superior, font=("Verdana", 12), bg= self.color)
             self.label_errS.grid(row=2, column=1, padx= 25, sticky= W)
 
@@ -277,7 +268,7 @@ class INTERVALOS(Frame):
         cont_total = Frame(borde, bg= self.color)
         cont_total.pack()
         contenedor_funcion = Frame(cont_total, bg= self.color, width=600)
-        contenedor_funcion.grid(row=0, column=1, columnspan= 3, padx= 15)
+        contenedor_funcion.grid(row=0, column=0, columnspan= 3, padx= 15)
         contenedor_lim = Frame(cont_total, bg= self.color, width= 600)
         contenedor_lim.grid(row=1, column=1, columnspan=3, pady= 8, sticky= W)
         contenedor_btn = Frame(cont_total, bg= self.color, width= 200, height= 100)
@@ -304,18 +295,18 @@ class INTERVALOS(Frame):
         self.valB = StringVar()
         self.valC = StringVar()
 
+        Label(contenedor_funcion, text="y  =  ", font=("Verdana", 14), justify=CENTER, bg= self.color).grid(row=1, column=1)
         self.A = Entry(contenedor_funcion, validate="key", validatecommand=(validacion, '%P'))
         self.A.config(textvariable= self.valA, font=("Verdana", 13), justify=CENTER, width= 5)
-        self.A.grid(row= 1, column=1, pady=10)
-        Label(contenedor_funcion, text="  *  x^2  +  ", font=("Verdana", 14), justify=CENTER, bg= self.color).grid(row=1, column=2, pady=10)
+        self.A.grid(row= 1, column=2, pady=10)
+        Label(contenedor_funcion, text="  *  x^2  +  ", font=("Verdana", 14), justify=CENTER, bg= self.color).grid(row=1, column=3, pady=10)
         self.B = Entry(contenedor_funcion, validate="key", validatecommand=(validacion, '%P'))
         self.B.config(textvariable= self.valB, font=("Verdana", 13), justify=CENTER, width= 5)
-        self.B.grid(row= 1, column=3, pady=10)
-        Label(contenedor_funcion, text="  *  x  +  ", font=("Verdana", 14), justify=CENTER, bg= self.color).grid(row=1, column=4, pady=10)
+        self.B.grid(row= 1, column=4, pady=10)
+        Label(contenedor_funcion, text="  *  x  +  ", font=("Verdana", 14), justify=CENTER, bg= self.color).grid(row=1, column=5, pady=10)
         self.C = Entry(contenedor_funcion, validate="key", validatecommand=(validacion, '%P'))
         self.C.config(textvariable= self.valC, font=("Verdana", 13), justify=CENTER, width= 5)
-        self.C.grid(row= 1, column= 5, pady=10)
-        Label(contenedor_funcion, text="  =  y  ", font=("Verdana", 14), justify=CENTER, bg= self.color).grid(row=1, column=6, pady=10)
+        self.C.grid(row= 1, column= 6, pady=10)
 
         #Ingreso de limite inferior, superior e Intervalos
         cont1 = Frame(contenedor_lim, bg= self.color)
@@ -337,7 +328,7 @@ class INTERVALOS(Frame):
         self.superior = Entry(cont2, validate="key", validatecommand=(validacion, '%P'))
         self.superior.config(textvariable= self.lim_superior, font=("Verdana", 13), justify=CENTER, width= 8)
         self.superior.grid(row= 1, column=0, pady=5, padx= 4, sticky= W)
-        Label(cont3, text="Nro. de Intervalos:", font=("Verdana", 12), justify=LEFT, bg= self.color).grid(row=0, column=0)
+        Label(cont3, text="Nro. de Rectángulos:", font=("Verdana", 12), justify=LEFT, bg= self.color).grid(row=0, column=0)
         self.inter = Entry(cont3, validate="key", validatecommand=(validacion, '%P'))
         self.inter.config(textvariable= self.intervalos, font=("Verdana", 13), justify=CENTER, width= 8)
         self.inter.grid(row= 1, column= 0, pady=5, padx= 4, sticky= W)
@@ -347,9 +338,9 @@ class INTERVALOS(Frame):
         self.btn_guardar.pack(padx= 25)
 
         #Canva_Frame donde se van a mostrar los gráficos
-        self.canva_I = Canvas(self.contenedor_i, width= 450, height= 350)
+        self.canva_I = Canvas(self.contenedor_i, width= 460, height= 350)
         self.canva_I.pack(padx= 10)
-        self.canva_S = Canvas(self.contenedor_s, width= 450, height= 350)
+        self.canva_S = Canvas(self.contenedor_s, width= 460, height= 350)
         self.canva_S.pack(padx= 10)
 
         #botones
