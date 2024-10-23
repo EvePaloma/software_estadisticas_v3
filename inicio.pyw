@@ -1,18 +1,19 @@
 from tkinter import messagebox
 from tkinter import *
-from Grafico_Intervalo import*
 from Gauss_Jordan import *
 
 class MENU(Frame):
-    def __init__(self, master = None):
-        super().__init__(master, width = 1100, height = 600, bg = "#b191b3")
-        self.master = master
+    def __init__(self, main = None):
+        super().__init__(main, width = 1100, height = 600, bg = "#b191b3")
+        self.main = main
         self.pack_propagate(False) 
         self.pack(expand=True)
         self.menu()
-        self.master.state('zoomed')
+        self.main.state('zoomed')
         
     def mostrar_grafico(self):
+        from Grafico_Intervalo import INTERVALOS
+        self.main.destroy()
         ventana = Tk()
         ventana.wm_title("Cálculo de Área")
         ventana.wm_resizable(0,0)
@@ -21,6 +22,8 @@ class MENU(Frame):
         entradas.mainloop()
 
     def mostrar_gauss(self):
+        from Gauss_Jordan import GaussJordan
+        self.main.destroy()
         ventana = Tk()
         ventana.wm_title("Método de Gauss-Jordan")
         ventana.wm_resizable(0,0)

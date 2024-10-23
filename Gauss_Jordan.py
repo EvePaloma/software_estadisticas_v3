@@ -11,6 +11,15 @@ class GaussJordan(Frame):
         self.resultados = []
         self.activado = False
 
+    def volver_menu(self):
+        from inicio import MENU
+        self.master.destroy()
+        ventana = Tk()
+        ventana.wm_title("Menú software estadísticas")
+        ventana.wm_resizable(0,0)
+        menu = MENU(ventana)
+        menu.mainloop()
+
     def validar(self, entrada):
         if entrada == "-" or entrada == "." or entrada == "":  
             return True
@@ -50,9 +59,6 @@ class GaussJordan(Frame):
         self.label_tipo_sistema.config(text="")  # Si querés limpiar el texto del label de tipo de sistema
         if hasattr(self, 'cont_rta'):
             self.cont_rta.pack_forget() 
-
-    def volver(self):   
-        self.master.destroy()
 
     def gauss_jordan(self, A, b):
         n = len(A)       #Almacena el num de filas
@@ -258,7 +264,7 @@ class GaussJordan(Frame):
         self.label_tipo_sistema.pack()
 
         #botones volver y limpiar
-        btn_volver = Button(self.cont_botones, text="Volver", command=self.volver, bg="#d1867d", activebackground= "#ee9388", font=("Robot", 13, "bold"), width=12)
+        btn_volver = Button(self.cont_botones, text="Volver", command=self.volver_menu, bg="#d1867d", activebackground= "#ee9388", font=("Robot", 13, "bold"), width=12)
         btn_volver.grid(row=0, column=0, padx=15)
         btn_limpiar = Button(self.cont_botones, text="Limpiar",command= self.limpiar, bg="#d1867d", activebackground= "#ee9388", font=("Robot", 13, "bold"), width=12)
         btn_limpiar.grid(row=0, column=1, padx=15)

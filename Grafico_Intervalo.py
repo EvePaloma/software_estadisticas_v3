@@ -16,6 +16,15 @@ class INTERVALOS(Frame):
         self.menu()
         self.error = True
 
+    def volver_menu(self):
+        from inicio import MENU
+        self.master.destroy()
+        ventana = Tk()
+        ventana.wm_title("Menú software estadísticas")
+        ventana.wm_resizable(0,0)
+        menu = MENU(ventana)
+        menu.mainloop()
+
     def str_to(self):
         try:
             self.a = float(self.valA.get())
@@ -48,27 +57,26 @@ class INTERVALOS(Frame):
             return False
     
     def limpiar(self):
-        entradas = [self.A, self.B, self.C, self.inferior, self.superior, self.inter]
-        valore = [self.a, self.b, self.c, self.Li, self.Ls, self.intervalo]
-        # Limpiar los valores de las entradas
-        for entry in entradas:
-            entry.delete(0, END)
-        for val in valore:
-            val = 0
+        try:
+            entradas = [self.A, self.B, self.C, self.inferior, self.superior, self.inter]
+            valore = [self.a, self.b, self.c, self.Li, self.Ls, self.intervalo]
+            # Limpiar los valores de las entradas
+            for entry in entradas:
+                entry.delete(0, END)
+            for val in valore:
+                val = 0
 
-        #limpia canva 1
-        for widget in self.canva_I.winfo_children():
-            widget.destroy()
-        #limpia canva 2
-        for widget in self.canva_S.winfo_children():
-            widget.destroy()
+            #limpia canva 1
+            for widget in self.canva_I.winfo_children():
+                widget.destroy()
+            #limpia canva 2
+            for widget in self.canva_S.winfo_children():
+                widget.destroy()
 
-        if hasattr(self, 'rta'):
-            self.rta.pack_forget() 
-
-    def volver(self):   
-        self.master.destroy()
-        self.master.master.deiconify()
+            if hasattr(self, 'rta'):
+                self.rta.pack_forget()
+        except:
+            pass
 
     def funcion_cuad(self, x):
         a = self.a
@@ -344,15 +352,15 @@ class INTERVALOS(Frame):
         self.canva_S.pack(padx= 10)
 
         #botones
-        btn_volver = Button(self.cont_botones, text="Volver", bg="#d1867d", activebackground= "#ee9388", font=("Verdana", 13, "bold"), width=12, command= self.volver)
+        btn_volver = Button(self.cont_botones, text="Volver", bg="#d1867d", activebackground= "#ee9388", font=("Verdana", 13, "bold"), width=12, command= self.volver_menu)
         btn_volver.grid(row=0, column=0, padx=20)
         btn_limpiar = Button(self.cont_botones, text="Limpiar", bg="#d1867d", activebackground= "#ee9388", font=("Verdana", 13, "bold"), width=12, command= self.limpiar)
         btn_limpiar.grid(row=0, column=1, padx=20)
 
 
-ventana = Tk()
+"""ventana = Tk()
 ventana.wm_title("Cálculo de área")
 ventana.wm_resizable(0,0)
 ventana.wm_geometry("+0+0")
 entradas = INTERVALOS(ventana)
-entradas.mainloop()
+entradas.mainloop()"""
