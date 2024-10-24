@@ -143,6 +143,7 @@ class GaussJordan(Frame):
 
     def mostrar_resultado(self, A, b):
         self.crear_entradas_resultados()
+        resultados_xyz = []
         for i in range(3):
             for j in range(3):
                 #Muestra la matriz transformada
@@ -156,7 +157,10 @@ class GaussJordan(Frame):
             self.resultados[i][3].delete(0, END)
             self.resultados[i][3].insert(0, round(b[i], 2))
             self.resultados[i][3].config(state="readonly")
-        self.activado = True
+            resultados_xyz.append((self.resultados[i][3].get()))
+        
+        texto = "x = {}   y = {}   z = {}".format(*resultados_xyz)
+        Label(self.cont_rta, text= texto, font=("Robot", 14), bg="PeachPuff2").grid(row=3, column=0, columnspan=5, pady=10)
         self.cont_rta.pack(pady=15)
 
     def interfaz(self):
@@ -269,9 +273,9 @@ class GaussJordan(Frame):
         btn_limpiar = Button(self.cont_botones, text="Limpiar",command= self.limpiar, bg="#d1867d", activebackground= "#ee9388", font=("Robot", 13, "bold"), width=12)
         btn_limpiar.grid(row=0, column=1, padx=15)
 
-'''ventana = Tk()
+ventana = Tk()
 ventana.wm_title("Método Gauss-Jordan")
 ventana.wm_resizable(0, 0)
 ventana.geometry("+0+0")
 entradas = GaussJordan(ventana)
-entradas.mainloop()'''
+entradas.mainloop()
