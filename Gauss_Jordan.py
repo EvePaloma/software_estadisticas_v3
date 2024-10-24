@@ -31,33 +31,33 @@ class GaussJordan(Frame):
 
     def resolver(self):
         try:
-            #Lee los coeficientes y constantes
+            #Almacena los coeficientes y el término independiente en listas
             A = []
             b = []
-
+            #Recorre las filas de las entradas para obtener los valores
             for fila in [self.lista_1, self.lista_2, self.lista_3]:
+                #Obtiene los valores de los coeficientes y los convierte a float
                 fila_coeficientes = [float(entry.get()) for entry in fila[:-1]]  #Coeficientes
                 A.append(fila_coeficientes)
                 b.append(float(fila[-1].get()))  #Término independiente
             
-            # Aplicar el método de Gauss-Jordan
+            #Aplica el método 
             self.gauss_jordan(A, b)
         except ValueError:
             messagebox.showerror("Error", "Por favor, ingresa solo números válidos.")
 
     def limpiar(self):
-        # Limpiar los valores de las entradas
+        #Limpia los valores de las entradas
         for fila in [self.lista_1, self.lista_2, self.lista_3]:
             for entry in fila:
                 entry.delete(0, END)
         
-        # Si querés restablecer listas a 0, podés hacerlo aquí
+        #Se reinician las listas de resultados
         self.resultados = []
         self.activado = False
 
-        # Si tenés alguna interfaz que muestra resultados o mensajes, también podés reiniciar su contenido
-        self.label_tipo_sistema.config(text="")  # Si querés limpiar el texto del label de tipo de sistema
-        if hasattr(self, 'cont_rta'):
+        self.label_tipo_sistema.config(text="")  
+        if hasattr(self, 'cont_rta'):          #Oculta el contenedor de resultados
             self.cont_rta.pack_forget() 
 
     def gauss_jordan(self, A, b):
@@ -74,16 +74,19 @@ class GaussJordan(Frame):
             if A[i][i] == 0:
                 continue  #Si no hay un pivote válido en esta fila va a continuar itinerando
 
-            #Se normaliza la fila dividiendo cada elemento de la fila por el valorde del pivote
+            #Guarda el valor del pivote
             pivote = A[i][i]
+            #Se normaliza la fila dividiendo cada elemento de la fila por el valorde del pivote
             for j in range(n):
                 A[i][j] /= pivote
             b[i] /= pivote
 
             #Hacer ceros en la columna del pivote.
             for j in range(n):
+                #Para cada fila diferente de la fila del pivote
                 if j != i:
-                    factor = A[j][i]       #Calcula el factor usando el elemento de la fila que se quiere hacer 0
+                    #Factor=elemento
+                    factor = A[j][i]       #Se calcula un factor, usando el elemento de la fila que se quiere hacer 0
                     for k in range(n):
                         A[j][k] -= factor * A[i][k]       #Elemento - factor * fila del pivote
                     b[j] -= factor * b[i]
@@ -100,7 +103,6 @@ class GaussJordan(Frame):
             if all(A[i][j] == 0 for j in range(n)) and b[i] != 0:
                 tipo_sistema = "Sistema Incompatible: No tiene solución."
                 break
-                #self.label_tipo_sistema.config(text=tipo_sistema)
                 
             #Si la fila es [0, 0, 0 | 0] hay infinitas soluciones
             elif all(A[i][j] == 0 for j in range(n)) and b[i] == 0:
@@ -113,8 +115,6 @@ class GaussJordan(Frame):
         #Si el sistema es compatible determinado, muestra los resultados
         if tipo_sistema == "Sistema Compatible Determinado":
             self.mostrar_resultado(A, b)
-        #Muestra el tipo de sistema en la interfaz
-            #self.label_tipo_sistema.config(text=tipo_sistema)
 
     def crear_entradas_resultados(self):
         self.cont_rta = Frame(self.cont_resultados, bg="PeachPuff2")
@@ -269,10 +269,9 @@ class GaussJordan(Frame):
         btn_limpiar = Button(self.cont_botones, text="Limpiar",command= self.limpiar, bg="#d1867d", activebackground= "#ee9388", font=("Robot", 13, "bold"), width=12)
         btn_limpiar.grid(row=0, column=1, padx=15)
 
-"""ventana = Tk()
+'''ventana = Tk()
 ventana.wm_title("Método Gauss-Jordan")
 ventana.wm_resizable(0, 0)
 ventana.geometry("+0+0")
 entradas = GaussJordan(ventana)
-entradas.mainloop()
-"""
+entradas.mainloop()'''
