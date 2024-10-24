@@ -273,9 +273,9 @@ class GaussJordan(Frame):
         btn_limpiar = Button(self.cont_botones, text="Limpiar",command= self.limpiar, bg="#d1867d", activebackground= "#ee9388", font=("Robot", 13, "bold"), width=12)
         btn_limpiar.grid(row=0, column=1, padx=15)
 
-ventana = Tk()
+"""ventana = Tk()
 ventana.wm_title("Método Gauss-Jordan")
 ventana.wm_resizable(0, 0)
 ventana.geometry("+0+0")
 entradas = GaussJordan(ventana)
-entradas.mainloop()
+entradas.mainloop()"""
