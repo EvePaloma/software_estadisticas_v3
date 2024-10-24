@@ -9,7 +9,7 @@ from matplotlib import style
 
 class INTERVALOS(Frame):
     def __init__(self, master = None):
-        super().__init__(master, width = 1350, height = 700, bg = "#ba5954")
+        super().__init__(master, width = 1360, height = 700, bg = "#ba5954")
         self.master = master
         self.pack_propagate(False) 
         self.pack(expand=True)
@@ -131,12 +131,22 @@ class INTERVALOS(Frame):
             #1) Esquina inferior izquierda
             coor_x.append(x[i-1])
             coor_y.append(0)
-            #2) Esquina superior izquierda
-            coor_x.append(x[i-1])
-            coor_y.append(menor)
-            #3) Esquina superior derecha
-            coor_x.append(x[i])
-            coor_y.append(menor)
+            if menor < 0:
+                mayor = max(self.funcion_cuad(x[i-1]), self.funcion_cuad(x[i]))
+                #2) Esquina superior izquierda
+                coor_x.append(x[i-1])
+                coor_y.append(mayor)
+                #3) Esquina superior derecha
+                coor_x.append(x[i])
+                coor_y.append(mayor)
+            else:
+                #2) Esquina superior izquierda
+                coor_x.append(x[i-1])
+                coor_y.append(menor)
+                #3) Esquina superior derecha
+                coor_x.append(x[i])
+                coor_y.append(menor)
+
             #4) Esquina inferior derecha
             coor_x.append(x[i])    
             coor_y.append(0)
@@ -168,12 +178,21 @@ class INTERVALOS(Frame):
             #1) Esquina inferior izquierda
             coor_x.append(x[i-1])
             coor_y.append(0)
-            #2) Esquina superior izquierda
-            coor_x.append(x[i-1])
-            coor_y.append(mayor)
-            #3) Esquina superior derecha
-            coor_x.append(x[i])
-            coor_y.append(mayor)
+            if mayor < 0:
+                menor = min(self.funcion_cuad(x[i-1]), self.funcion_cuad(x[i]))
+                #2) Esquina superior izquierda
+                coor_x.append(x[i-1])
+                coor_y.append(menor)
+                #3) Esquina superior derecha
+                coor_x.append(x[i])
+                coor_y.append(menor)                
+            else:
+                #2) Esquina superior izquierda
+                coor_x.append(x[i-1])
+                coor_y.append(mayor)
+                #3) Esquina superior derecha
+                coor_x.append(x[i])
+                coor_y.append(mayor)
             #4) Esquina inferior derecha
             coor_x.append(x[i])    
             coor_y.append(0)
@@ -196,12 +215,23 @@ class INTERVALOS(Frame):
             n_intervalos = self.intervalo
             limI = self.Li
             limS = self.Ls
-            if self.a < 0:
+
+            """if self.a < 0:
                 area_superior, xbarS, ybarS = self.Riemann_inferior(limI, limS, n_intervalos)
                 area_inferior, xbarI, ybarI  = self.Riemann_superior(limI, limS, n_intervalos)
             else:
                 area_inferior, xbarI, ybarI = self.Riemann_inferior(limI, limS, n_intervalos)
-                area_superior, xbarS, ybarS = self.Riemann_superior(limI, limS, n_intervalos)
+                area_superior, xbarS, ybarS = self.Riemann_superior(limI, limS, n_intervalos)"""
+            
+            area_inferior, xbarI, ybarI = self.Riemann_inferior(limI, limS, n_intervalos)
+            area_superior, xbarS, ybarS = self.Riemann_superior(limI, limS, n_intervalos)
+
+            if self.a < 0:
+                intermedio = 0
+                intermedio = area_inferior
+                area_inferior = area_superior
+                area_superior = intermedio
+
             area_exacta = self.area_exacta()
 
             #Porcentaje de error
@@ -244,19 +274,19 @@ class INTERVALOS(Frame):
             #ingresa loa labels al sistema
             self.rta = Frame(self.con_resultado, bg= self.color)
             self.rta.pack(expand= True)
-            real = "Área Exacta: " + str(round(area_exacta, 3))
+            real = "Área Exacta: " + str(abs(round(area_exacta, 3)))
             self.label_real = Label(self.rta, text= real, font=("Verdana", 12), bg= self.color)
             self.label_real.grid(row=0, column=0, columnspan=2)
-            inferior = "Área Inferior: " + str(round(area_inferior,2))
+            inferior = "Área Inferior: " + str(round(abs(area_inferior), 3))
             self.label_inferior = Label(self.rta, text= inferior, font=("Verdana", 12), bg= self.color)
             self.label_inferior.grid(row=1, column=0, padx= 25, sticky= W)
-            superior = "Área Superior: " + str(round(area_superior,2))
+            superior = "Área Superior: " + str(round(area_superior,3))
             self.label_superior = Label(self.rta, text= superior, font=("Verdana", 12), bg= self.color)
             self.label_superior.grid(row=2, column=0, padx= 25, sticky= W)
-            error_inferior = "(%) Error Inferior: " + str(error1)
+            error_inferior = "(%) Error Inferior: " + str(error1) + " %"
             self.label_errI = Label(self.rta, text= error_inferior, font=("Verdana", 12), bg= self.color)
             self.label_errI.grid(row=1, column=1, padx= 25, sticky= W)
-            error_superior = "(%) Error Superior: " + str(error2)
+            error_superior = "(%) Error Superior: " + str(error2) + " %"
             self.label_errS= Label(self.rta, text= error_superior, font=("Verdana", 12), bg= self.color)
             self.label_errS.grid(row=2, column=1, padx= 25, sticky= W)
 
@@ -361,6 +391,5 @@ class INTERVALOS(Frame):
 """ventana = Tk()
 ventana.wm_title("Cálculo de área")
 ventana.wm_resizable(0,0)
-ventana.wm_geometry("+0+0")
 entradas = INTERVALOS(ventana)
 entradas.mainloop()"""
