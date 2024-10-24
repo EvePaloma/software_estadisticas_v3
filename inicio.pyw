@@ -4,10 +4,10 @@ from Gauss_Jordan import *
 
 class MENU(Frame):
     def __init__(self, main = None):
-        super().__init__(main, width = 1100, height = 600, bg = "#b191b3")
+        super().__init__(main, width = 1200, height = 700, bg = "#b191b3")
         self.main = main
         self.pack_propagate(False) 
-        self.pack(expand=True)
+        self.pack(expand=True, fill='both')
         self.menu()
         self.main.state('zoomed')
         
@@ -33,19 +33,20 @@ class MENU(Frame):
 
     def menu(self):
         color = "#b191b3"
-        borde = Frame(self, width= 900, height= 500, bg= color)
+        borde = Frame(self, bg= color, height= 600, width= 1000)
         borde.pack_propagate(False)
-        borde.pack(fill='both',expand=True, padx= 15, pady=15)
-        
-        cont_texto = Frame(borde, bg="#c9adcb", height= 100, width= 500)
-        cont_texto.pack(fill='x')
+        borde.pack(expand=True, padx= 40, pady=40)
+        #"#c9adcb"
+        cont_texto = Frame(borde, bg= "#c9adcb", height= 200, width= 500)
+        cont_texto.pack(fill='both', expand=True)
         cont_botones = Frame(borde, bg= "#c9adcb", height= 400, width= 500)
         cont_botones.pack(fill='both', expand=True)
 
+        Label(cont_texto, text="", font=("Verdana", 2),bg="#c9adcb").pack(ipady= 20) #label colocado para poder separar el texto del borde, no supe que más ponerle
         Label(cont_texto, text="Menú", font=("Verdana", 20),bg="#c9adcb").pack()
         Label(cont_texto, text="Seleccione que desea utilizar", font=("Verdana", 17),bg="#c9adcb").pack()
 
-        boton_grafico= Button(cont_botones, text="Gráfico de Intervalos", justify= CENTER, font=("Verdana", 15),bg="#ede3ee", width= 20, height= 5, command= self.mostrar_grafico)
+        boton_grafico= Button(cont_botones, text="Gráfico de Área", justify= CENTER, font=("Verdana", 15),bg="#ede3ee", width= 20, height= 5, command= self.mostrar_grafico)
         boton_grafico.pack(pady=40)
 
         boton_gauss= Button(cont_botones, text="Método de Gauss-Jordan", justify= CENTER, font=("Verdana", 15),bg="#ede3ee", width= 20, height= 5, command= self.mostrar_gauss)
