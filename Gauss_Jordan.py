@@ -44,7 +44,7 @@ class GaussJordan(Frame):
             #Aplica el método 
             self.gauss_jordan(A, b)
         except ValueError:
-            messagebox.showerror("Error", "Por favor, ingresa solo números válidos.")
+            messagebox.showerror("Error", "Por favor, complete todos los campos.")
 
     def limpiar(self):
         #Limpia los valores de las entradas
@@ -91,7 +91,7 @@ class GaussJordan(Frame):
                         A[j][k] -= factor * A[i][k]       #Elemento - factor * fila del pivote
                     b[j] -= factor * b[i]
     
-        #Verifica el tipo de sistema y mostrar resultados
+        #Verifica el tipo de sistema y muestra resultados
         self.verificar_tipo_sistema(A, b)
 
     def verificar_tipo_sistema(self, A, b):
@@ -167,10 +167,10 @@ class GaussJordan(Frame):
         #valores usados
         self.color_fondo = "#e0cbc1"
         validacion = self.register(self.validar)
-        #contenedor de todo
+        #Contenedor de todo
         self.cont_total= Label(self, bg="#e0cbc1", width= 1100, height=680)
         self.cont_total.pack(pady= 70, ipadx=20, ipady=20) 
-        #contenedor ingresos
+        #Contenedor ingresos
         self.cont_valores = Frame(self.cont_total, width=800, height=200, bg="#e0cbc1")
         self.cont_valores.pack_propagate(False)
         self.cont_valores.pack()
@@ -180,12 +180,12 @@ class GaussJordan(Frame):
         cont_f2.grid(row=1, column=0)
         cont_f3 = Frame(self.cont_valores, bg="#e0cbc1")
         cont_f3.grid(row=2, column=0)
-        #contenedor resultados
+        #Contenedor resultados
         self.cont_resultados = Frame(self.cont_total, width=700, height=200, bg="#ffe0cf")
         self.cont_resultados.pack_propagate(False)
         self.cont_resultados.pack(expand=True)
         #self.crear_entradas_resultados()
-        #contenedor botones
+        #Contenedor botones
         self.cont_botones = Frame(self.cont_total, width=800, height=100, bg="#e0cbc1")
         self.cont_botones.pack(pady= 12)
 
@@ -255,7 +255,7 @@ class GaussJordan(Frame):
         Label(cont_f3, text=" ⌋", font=("Robot", 18), justify=CENTER, bg=self.color_fondo).grid(row= 0, column=9, pady=10)
         self.lista_3.extend([self.entry_x3, self.entry_y3, self.entry_z3, self.entry_r3])
 
-        #boton resolver
+        #Boton resolver
         cont_resolver = Frame(self.cont_valores, bg="#e0cbc1")
         cont_resolver.grid(row=3, column=0, pady=15)
         btn_resolver = Button(cont_resolver, text="Resolver", command=self.resolver, bg="#d1867d", font=("Robot", 13, "bold"), width=12)
@@ -267,7 +267,7 @@ class GaussJordan(Frame):
         self.label_tipo_sistema.pack_forget()
         self.label_tipo_sistema.pack()
 
-        #botones volver y limpiar
+        #Botones volver y limpiar
         btn_volver = Button(self.cont_botones, text="Volver", command=self.volver_menu, bg="#d1867d", activebackground= "#ee9388", font=("Robot", 13, "bold"), width=12)
         btn_volver.grid(row=0, column=0, padx=15)
         btn_limpiar = Button(self.cont_botones, text="Limpiar",command= self.limpiar, bg="#d1867d", activebackground= "#ee9388", font=("Robot", 13, "bold"), width=12)
