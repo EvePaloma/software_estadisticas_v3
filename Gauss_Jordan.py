@@ -10,6 +10,7 @@ class GaussJordan(Frame):
         self.interfaz()
         self.resultados = []
         self.activado = False
+        self.master.protocol("WM_DELETE_WINDOW", lambda: None)
 
     def volver_menu(self):
         from inicio import MENU

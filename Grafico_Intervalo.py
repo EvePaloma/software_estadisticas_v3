@@ -15,6 +15,7 @@ class INTERVALOS(Frame):
         self.pack(expand=True)
         self.menu()
         self.error = True
+        self.master.protocol("WM_DELETE_WINDOW", lambda: None)
 
     def volver_menu(self):
         from inicio import MENU
