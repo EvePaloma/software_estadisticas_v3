@@ -239,7 +239,7 @@ class INTERVALOS(Frame):
             error1 = round((abs((abs(area_inferior) - area_exacta)/area_exacta)*100), 3)
             error2 = round((abs((abs(area_superior) - area_exacta)/area_exacta)*100), 3)
 
-            x = np.linspace(limI - 2, limS + 2, 25)  #Número de puntos que usamos para graficar la curva
+            x = np.linspace(limI - 1, limS + 1, 25)  #Número de puntos que usamos para graficar la curva
             #grafico inferior
             figI, axI = plt.subplots(figsize=(4.5, 3.7))
             axI.plot(x, self.funcion_cuad(x), 'k', label="f(x)")
